@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/curfew/.vs/curfew/FileContentIndex/23417ce9-eb07-4c9f-ab4f-b04a997ab9db.vsidx
+/curfew/.vs/curfew/FileContentIndex
+/curfew/curfew/obj/Debug/net8.0-windows/curfew.AssemblyInfoInputs.cache
+/curfew/curfew/obj/Debug/net8.0-windows/curfew.AssemblyInfo.cs

@@ -116,7 +116,7 @@ namespace curfew
         {
             // Draw function of TitleScreen here
             screenColor = Color.Red;
-           // _spriteBatch.Draw(titleBg, new Rectangle(0, 0, windowWidth, windowHeight), Color.White);
+            // _spriteBatch.Draw(titleBg, new Rectangle(0, 0, windowWidth, windowHeight), Color.White);
 
         }
 

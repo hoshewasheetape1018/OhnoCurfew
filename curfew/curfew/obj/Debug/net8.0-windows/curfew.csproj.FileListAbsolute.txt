@@ -25,3 +25,4 @@ C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\obj\Debug\net8.0-windows
 C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\obj\Debug\net8.0-windows\curfew.pdb
 C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\obj\Debug\net8.0-windows\curfew.genruntimeconfig.cache
 C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\obj\Debug\net8.0-windows\ref\curfew.dll
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\titlescreenplaceholder.xnb

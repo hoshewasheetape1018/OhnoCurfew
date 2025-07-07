@@ -22,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Document",
@@ -30,13 +30,21 @@
               "Title": "Scene.cs",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Scene.cs",
               "RelativeDocumentMoniker": "curfew\\Scene.cs",
-              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Scene.cs*",
-              "RelativeToolTip": "curfew\\Scene.cs*",
-              "ViewState": "AgIAABEAAAAAAAAAAAAAwBwAAAA9AAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Scene.cs",
+              "RelativeToolTip": "curfew\\Scene.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAuwCEAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-07T07:18:40.67Z",
               "IsPinned": true,
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Bookmark",
@@ -72,9 +80,9 @@
               "Title": "Game1.cs",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Game1.cs",
               "RelativeDocumentMoniker": "curfew\\Game1.cs",
-              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Game1.cs",
-              "RelativeToolTip": "curfew\\Game1.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAQwBgAAAAsAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Game1.cs*",
+              "RelativeToolTip": "curfew\\Game1.cs*",
+              "ViewState": "AgIAABgAAAAAAAAAAAAcwBsAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-07T07:26:49.027Z",
               "EditorCaption": ""

@@ -1,13 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+
 
 namespace curfew
 {
@@ -22,14 +20,23 @@ namespace curfew
         // EXIT - Exit the game
 
         private Action exitCallback;
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+        private ContentManager Content;
 
         string currentScene;
         Color screenColor;
-
-        public Scene(string currentScene, Action exitCallback)
+        private Texture2D titleBg;
+        private int windowHeight;
+        private int windowWidth;
+        public Scene(string currentScene, Action exitCallback, ContentManager Content, SpriteBatch spriteBatch, int windowWidth, int windowHeight)
         {
             this.currentScene = currentScene;
             this.exitCallback = exitCallback;
+            this.Content = Content;
+            this._spriteBatch = spriteBatch;
+            this.windowWidth = windowWidth;
+            this.windowHeight = windowHeight;
         }
 
         public string CurrentScene { get => currentScene; }
@@ -101,11 +108,15 @@ namespace curfew
             }
 
         }
-
+        public void SetAsset(Texture2D titleBackground)
+        {
+            titleBg = titleBackground;
+        }
         protected void drawTitleScreen()
         {
             // Draw function of TitleScreen here
             screenColor = Color.Red;
+           // _spriteBatch.Draw(titleBg, new Rectangle(0, 0, windowWidth, windowHeight), Color.White);
 
         }
 
@@ -114,6 +125,9 @@ namespace curfew
         {
             // Draw function of TitleScreen here
             screenColor = Color.Yellow;
+
+            //for testing only lol will remove when Title screen gets a proper UI.
+            _spriteBatch.Draw(titleBg, new Rectangle(0, 0, windowWidth, windowHeight), Color.White);
 
         }
 
@@ -128,5 +142,7 @@ namespace curfew
         {
             return screenColor;
         }
+
+
     }
 }

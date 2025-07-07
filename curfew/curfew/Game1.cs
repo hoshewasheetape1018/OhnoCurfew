@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace curfew
 {
@@ -8,6 +9,9 @@ namespace curfew
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        Scene scene;
+        Color screenColor;
 
         public Game1()
         {
@@ -18,8 +22,10 @@ namespace curfew
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            scene = new Scene("title", Exit);
+            screenColor = Color.CornflowerBlue;
+            Console.WriteLine("Color: " + screenColor.ToString());
+            // TODO: Initialize stages, Initialize to titleScreen
             base.Initialize();
         }
 
@@ -27,7 +33,10 @@ namespace curfew
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            scene.selectScene();
+
             // TODO: use this.Content to load your game content here
+            // no idea
         }
 
         protected override void Update(GameTime gameTime)
@@ -36,15 +45,19 @@ namespace curfew
                 Exit();
 
             // TODO: Add your update logic here
+            // no idea
 
+            screenColor = scene.getColor();
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            GraphicsDevice.Clear(screenColor);
+            scene.drawSelectScene();
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

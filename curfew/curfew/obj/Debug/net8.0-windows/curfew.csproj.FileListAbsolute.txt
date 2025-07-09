@@ -26,3 +26,16 @@ C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\obj\Debug\net8.0-windows
 C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\obj\Debug\net8.0-windows\curfew.genruntimeconfig.cache
 C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\obj\Debug\net8.0-windows\ref\curfew.dll
 C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\titlescreenplaceholder.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\HeroKnight.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\levelcolmap.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\gameFont.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\8bit.wma
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\8bit.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\Attack.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\Character Idle.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\Fall.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\Jump.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\Platform 1.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\Walk.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\levelmap.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\levelmapcollisionreal.xnb

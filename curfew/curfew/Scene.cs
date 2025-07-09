@@ -3,22 +3,13 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
-
 using System;
-
+using System.Collections.Generic;
 
 namespace curfew
 {
     internal class Scene
     {
-        // make functions for Title screen -> void function?
-        // switch case for choice
-        // if no save file exists then "Start Game" else "Continue Game"
-
-        // START GAME - Go to stage 1 or CONTINUE GAME - Go to checkpoint
-        // SETTINGS - Open Settings (Mute audio, Go to fullscreen, back to Main Title)
-        // EXIT - Exit the game
-
         private Action exitCallback;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -29,6 +20,14 @@ namespace curfew
         private Texture2D titleBg;
         private int windowHeight;
         private int windowWidth;
+        SpriteFont spriteFont;
+
+        MouseState previousMouseState;
+        Rectangle startButton = new Rectangle(180, 420, 250, 40);
+        Rectangle exitButton = new Rectangle(180, 510, 250, 40);
+
+        bool hasCheckpointSave = false;
+
         public Scene(string currentScene, Action exitCallback, ContentManager Content, SpriteBatch spriteBatch, int windowWidth, int windowHeight)
         {
             this.currentScene = currentScene;
@@ -64,30 +63,24 @@ namespace curfew
                 default:
                     break;
             }
-
         }
+
         protected void titleScreen()
         {
-            Console.WriteLine("Title Screen");
-            Console.WriteLine("Enter scene: title game settings exit");
-            currentScene = Console.ReadLine();
-            selectScene();
-
+            // placeholder for switching logic
         }
 
         protected void settingsScreen()
         {
             Console.WriteLine("Settings Screen");
         }
+
         protected void startGame()
         {
             Console.WriteLine("In game");
         }
 
-
-
-        // DRAW FUNCTIONS -- Called in Game1.cs Draw
-        public void drawSelectScene()
+        public void drawSelectScene(Player player, Texture2D collisionmapTexture, Texture2D backgroundTexture, Rectangle collisionmapDisplay, Rectangle backgroundDisplay, Color collisionmapColor, Color backgroundColor, List<Enemy> enemies)
         {
             switch (currentScene)
             {
@@ -96,7 +89,7 @@ namespace curfew
                     break;
 
                 case ("game"):
-                    drawgameScreen();
+                    drawgameScreen(player, collisionmapTexture, backgroundTexture, collisionmapDisplay, backgroundDisplay, collisionmapColor, backgroundColor, enemies);
                     break;
 
                 case ("settings"):
@@ -106,35 +99,58 @@ namespace curfew
                 default:
                     break;
             }
-
         }
-        public void SetAsset(Texture2D titleBackground)
+
+        public void SetAsset(Texture2D titleBackground, SpriteFont font)
         {
             titleBg = titleBackground;
+            spriteFont = font;
         }
+
         protected void drawTitleScreen()
         {
-            // Draw function of TitleScreen here
             screenColor = Color.Red;
-            // _spriteBatch.Draw(titleBg, new Rectangle(0, 0, windowWidth, windowHeight), Color.White);
+            MouseState mouse = Mouse.GetState();
+            Point mousePoint = new Point(mouse.X, mouse.Y);
 
+            _spriteBatch.Draw(titleBg, new Rectangle(0, 0, windowWidth, windowHeight), Color.White);
+
+            Color startColor = startButton.Contains(mousePoint) ? Color.Blue : Color.White;
+            Color exitColor = exitButton.Contains(mousePoint) ? Color.Blue : Color.White;
+
+            _spriteBatch.DrawString(spriteFont, "START GAME", new Vector2(startButton.X, startButton.Y), startColor);
+            _spriteBatch.DrawString(spriteFont, "EXIT", new Vector2(exitButton.X, exitButton.Y), exitColor);
+
+            if (mouse.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
+            {
+                if (startButton.Contains(mousePoint))
+                    currentScene = "game";
+                else if (exitButton.Contains(mousePoint))
+                    currentScene = "exit";
+
+                selectScene();
+            }
+
+            previousMouseState = mouse;
         }
-
 
         protected void drawSettingsScreen()
         {
-            // Draw function of TitleScreen here
             screenColor = Color.Yellow;
-
-            //for testing only lol will remove when Title screen gets a proper UI.
             _spriteBatch.Draw(titleBg, new Rectangle(0, 0, windowWidth, windowHeight), Color.White);
-
+            _spriteBatch.DrawString(spriteFont, "SETTINGS", new Vector2(180, 350), Color.White);
         }
 
-        protected void drawgameScreen()
+        protected void drawgameScreen(Player player, Texture2D collisionmapTexture, Texture2D backgroundDisplay, Rectangle collisionmapDisplay, Rectangle backgroundRectangle, Color collisionmapColor, Color backgroundColor, List<Enemy> enemies)
         {
-            // Draw function of TitleScreen here
             screenColor = Color.Magenta;
+            player.Draw(_spriteBatch);
+            _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
+            _spriteBatch.Draw(collisionmapTexture, collisionmapDisplay, collisionmapColor);
+            foreach (var enemy in enemies)
+            {
+                enemy.Draw(_spriteBatch);
+            }
 
         }
 
@@ -142,7 +158,6 @@ namespace curfew
         {
             return screenColor;
         }
-
 
     }
 }

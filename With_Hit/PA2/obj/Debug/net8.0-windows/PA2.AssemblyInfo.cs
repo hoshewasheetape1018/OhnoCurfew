@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PA2")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d46a2436513c3038e7db80b1d6b39ff772db5c80")]
 [assembly: System.Reflection.AssemblyProductAttribute("PA2")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PA2")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

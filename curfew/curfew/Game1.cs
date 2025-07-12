@@ -77,14 +77,13 @@ namespace curfew
             enemyTexture = Content.Load<Texture2D>("HeroKnight"); // reuse for now
             backgroundTexture = Content.Load<Texture2D>("levelmap");
             collisionmapTexture = Content.Load<Texture2D>("levelmapcollisionreal");
-            collisionmapTexture = Content.Load<Texture2D>("levelmapcollisionreal");
             collisionmapDisplay = new Rectangle(0, 0, windowWidth, windowHeight);
             collisionmapColor = Color.White;
 
             // Load player
             int heroWidth = heroTexture.Width / 10;
             int heroHeight = heroTexture.Height / 9;
-            Rectangle heroStartRect = new Rectangle(25, 650, heroWidth, heroHeight);
+            Rectangle heroStartRect = new Rectangle(25, 620, heroWidth - 40, heroHeight - 40);
             player = new Player();
             player.LoadContent(heroTexture, collisionmapTexture, heroStartRect, collisionmapDisplay);
 

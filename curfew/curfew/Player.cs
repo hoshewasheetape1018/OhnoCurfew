@@ -18,7 +18,7 @@ namespace curfew
 
         float gravity = 0.55f;
         float velocityY = 0f;
-        float jumpStrength = -12f;
+        float jumpStrength = -15f;
         int speed = 3;
 
         bool isJumping = false;
@@ -44,7 +44,7 @@ namespace curfew
             collisionmapTexture = collisionTex;
             heroDisplay = startRect;
             collisionmapDisplay = collisionDisplay;
-            heroSource = new Rectangle(0, 0, startRect.Width, startRect.Height);
+            heroSource = new Rectangle(200, 220, startRect.Width, startRect.Height);
 
             // Cache collision pixels
             collisionPixels = new Color[collisionmapTexture.Width * collisionmapTexture.Height];

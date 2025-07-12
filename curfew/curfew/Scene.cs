@@ -144,8 +144,9 @@ namespace curfew
         protected void drawgameScreen(Player player, Texture2D collisionmapTexture, Texture2D backgroundDisplay, Rectangle collisionmapDisplay, Rectangle backgroundRectangle, Color collisionmapColor, Color backgroundColor, List<Enemy> enemies)
         {
             screenColor = Color.Magenta;
-            player.Draw(_spriteBatch);
             _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
+            player.Draw(_spriteBatch);
+
             _spriteBatch.Draw(collisionmapTexture, collisionmapDisplay, collisionmapColor);
             foreach (var enemy in enemies)
             {

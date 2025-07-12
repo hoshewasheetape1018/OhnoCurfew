@@ -47,6 +47,9 @@ namespace curfew
         Texture2D enemyTexture;
         List<Enemy> enemies;
 
+        //GameTiles
+        GameTiles tiles;
+
         // Scene manager
         Scene scene;
         Color screenColor = Color.CornflowerBlue;

@@ -50,6 +50,8 @@ namespace curfew
         // Scene manager
         Scene scene;
         Color screenColor = Color.CornflowerBlue;
+        KeyboardState prevKeyState;
+        KeyboardState currentKeyState;
 
         public Game1()
         {
@@ -101,10 +103,15 @@ namespace curfew
 
         protected override void Update(GameTime gameTime)
         {
+
             KeyboardState key = Keyboard.GetState();
+            prevKeyState = currentKeyState;
+            currentKeyState = Keyboard.GetState();
             player.characterState("idle", 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
             debug.playerState(player);
 
+
+            player.Move(key);
             base.Update(gameTime);
         }
 
@@ -117,6 +124,7 @@ namespace curfew
 
             base.Draw(gameTime);
         }
+
 
 
     }

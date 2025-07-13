@@ -12,7 +12,7 @@ namespace curfew
         {
         }
 
-        public void Update(KeyboardState key)
+        public void Move(KeyboardState key)
         {
 
             // Horizontal movement

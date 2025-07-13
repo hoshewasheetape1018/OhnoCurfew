@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -56,6 +57,16 @@ namespace curfew
                 }
             }
 
+        }
+
+        public void keyPressed(KeyboardState prevKeyState, KeyboardState currentKeyState)
+        {
+
+
+            if (prevKeyState != currentKeyState)
+            {
+                Console.WriteLine(currentKeyState.ToString());
+            }
         }
     }
 }

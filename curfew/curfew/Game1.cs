@@ -11,6 +11,8 @@ namespace curfew
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        Debug debug;
+
 
         // Camera
         private Matrix cameraMatrix;
@@ -63,6 +65,7 @@ namespace curfew
 
         protected override void Initialize()
         {
+            debug = new Debug(windowWidth, windowHeight);
 
             base.Initialize();
         }
@@ -70,8 +73,6 @@ namespace curfew
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-
 
             // Load player
             heroTexture = Content.Load<Texture2D>("idle");
@@ -94,14 +95,15 @@ namespace curfew
             scene.SetAsset(titleBgtest, spriteFont);
             scene.selectScene();
 
-            // Debug
-            Debug(player);
+
+            debug.playerInfo(player);
         }
 
         protected override void Update(GameTime gameTime)
         {
             KeyboardState key = Keyboard.GetState();
             player.characterState("idle", 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            debug.playerState(player);
 
             base.Update(gameTime);
         }
@@ -117,29 +119,5 @@ namespace curfew
         }
 
 
-        void Debug(Player player)
-        {
-            Console.WriteLine("Window width: " + windowWidth + " Window Height: " + windowHeight + " Xpos: " + player.xpos + " Ypos: " + player.ypos);
-
-            Console.WriteLine("Player height: " + player.charaHeight + " Player width: " + player.charaWidth);
-
-            if (player.xpos < windowWidth)
-            {
-                Console.WriteLine("Player Inbounds X position");
-            }
-            else
-            {
-                Console.WriteLine("Player Out of bounds x position");
-            }
-            if (player.ypos < windowHeight)
-            {
-                Console.WriteLine("Player Inbounds Y position");
-            }
-            else
-            {
-                Console.WriteLine("Player Out of bounds Y position");
-            }
-
-        }
     }
 }

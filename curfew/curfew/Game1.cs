@@ -33,10 +33,8 @@ namespace curfew
         Player player;
         Texture2D heroTexture;
 
-        // Collision
-        Texture2D collisionmapTexture;
-        Rectangle collisionmapDisplay;
-        Color collisionmapColor;
+        //Gametiles
+        GameTiles tiles;
 
         //BG
         Texture2D backgroundTexture;
@@ -45,10 +43,7 @@ namespace curfew
 
         // Enemies
         Texture2D enemyTexture;
-        List<Enemy> enemies;
 
-        //GameTiles
-        GameTiles tiles;
 
         // Scene manager
         Scene scene;
@@ -68,6 +63,10 @@ namespace curfew
 
         protected override void Initialize()
         {
+            heroTexture = Content.Load<Texture2D>("HeroKnight");
+            enemyTexture = Content.Load<Texture2D>("HeroKnight"); // reuse for now
+            backgroundTexture = Content.Load<Texture2D>("levelmap");
+            player = new Player(200, 400, heroTexture, windowWidth, windowHeight);
             base.Initialize();
         }
 
@@ -75,41 +74,24 @@ namespace curfew
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Load textures
-            heroTexture = Content.Load<Texture2D>("HeroKnight");
-            enemyTexture = Content.Load<Texture2D>("HeroKnight"); // reuse for now
-            backgroundTexture = Content.Load<Texture2D>("levelmap");
-            collisionmapTexture = Content.Load<Texture2D>("levelmapcollisionreal");
-            collisionmapDisplay = new Rectangle(0, 0, windowWidth, windowHeight);
-            collisionmapColor = Color.White;
+
 
             // Load player
             int heroWidth = heroTexture.Width / 10;
             int heroHeight = heroTexture.Height / 9;
             Rectangle heroStartRect = new Rectangle(25, 620, heroWidth - 40, heroHeight - 40);
-            player = new Player();
-            player.LoadContent(heroTexture, collisionmapTexture, heroStartRect, collisionmapDisplay);
 
             //Load bg
             backgroundDisplay = new Rectangle(0, 0, backgroundTexture.Width, backgroundTexture.Height);
             backgroundColor = Color.White;
 
-
-            // Load enemies
-            enemies = new List<Enemy>
-            {
-                new Enemy(enemyTexture, collisionmapTexture, new Rectangle(300, 650, 64, 64), collisionmapDisplay),
-                new Enemy(enemyTexture, collisionmapTexture, new Rectangle(600, 650, 64, 64), collisionmapDisplay),
-                // Add more if needed
-            };
-
             // Load scene
-            scene = new Scene("title", Exit, Content, _spriteBatch, windowWidth, windowHeight);
+            scene = new Scene(player, "title", Exit, Content, _spriteBatch, windowWidth, windowHeight);
             titleBgtest = Content.Load<Texture2D>("titlescreenplaceholder");
             spriteFont = Content.Load<SpriteFont>("gameFont");
             song = Content.Load<Song>("8bit");
 
-            MediaPlayer.Play(song);
+            //MediaPlayer.Play(song);
             scene.SetAsset(titleBgtest, spriteFont);
             scene.selectScene();
         }
@@ -118,39 +100,14 @@ namespace curfew
         {
             KeyboardState key = Keyboard.GetState();
 
-            // Update player
-            player.Update(key, gameTime, enemies);
-
-            // Update enemies
-            foreach (var enemy in enemies)
-            {
-                enemy.Update(gameTime);
-
-                if (!player.IsHit && enemy.CheckCollision(player.displayRectangle) && !enemy.IsDead)
-                {
-                    player.TakeDamage(enemy.GetBounds().Center.ToVector2());
-                }
-            }
-
-            // Update camera
-            cameraOrigin = new Vector2(windowWidth / 2f, windowHeight / 1f);
-            Vector2 targetPos = new Vector2(player.displayRectangle.X + player.displayRectangle.Width / 2, player.displayRectangle.Y + player.displayRectangle.Height);
-
-            float cameraX = MathHelper.Clamp(targetPos.X - cameraOrigin.X, 0, MAP_WIDTH - windowWidth);
-            float cameraY = MathHelper.Clamp(targetPos.Y - cameraOrigin.Y, 0, MAP_HEIGHT - windowHeight);
-
-            cameraPosition = new Vector2(cameraX, cameraY);
-            cameraMatrix = Matrix.CreateTranslation(new Vector3(-cameraPosition, 0f));
-
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(screenColor);
-
-            _spriteBatch.Begin(transformMatrix: cameraMatrix);
-            scene.drawSelectScene(player, collisionmapTexture, backgroundTexture, collisionmapDisplay, backgroundDisplay, collisionmapColor, backgroundColor, enemies);
+            _spriteBatch.Begin();
+            scene.drawSelectScene(player, tiles, backgroundTexture, backgroundDisplay, backgroundColor);
             _spriteBatch.End();
 
             base.Draw(gameTime);

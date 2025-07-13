@@ -10,8 +10,8 @@ namespace curfew
 {
     public class GameTiles
     {
-        Texture2D tilesTexture;
-        Rectangle tilesDisplay, tileSource;
+        public Texture2D tilesTexture;
+        public Rectangle tilesDisplay, tileSource;
         Color tileColor;
 
         public GameTiles(Texture2D tilesTexture, Rectangle tilesDisplay, Rectangle tileSource, Color tileColor)

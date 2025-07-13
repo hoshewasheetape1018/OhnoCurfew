@@ -3,20 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|c:\\users\\user\\documents\\github\\ohnocurfew\\curfew\\curfew\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|solutionrelative:curfew\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|c:\\users\\user\\documents\\github\\ohnocurfew\\curfew\\curfew\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|solutionrelative:curfew\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|c:\\users\\user\\documents\\github\\ohnocurfew\\curfew\\curfew\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|solutionrelative:curfew\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|c:\\users\\user\\documents\\github\\ohnocurfew\\curfew\\curfew\\scene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|solutionrelative:curfew\\scene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|c:\\users\\user\\documents\\github\\ohnocurfew\\curfew\\curfew\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|solutionrelative:curfew\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|c:\\users\\user\\documents\\github\\ohnocurfew\\curfew\\curfew\\gametiles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|solutionrelative:curfew\\gametiles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|c:\\users\\user\\documents\\github\\ohnocurfew\\curfew\\curfew\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,6 +21,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|c:\\users\\user\\documents\\github\\ohnocurfew\\curfew\\curfew\\curfew.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
       "RelativeMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|solutionrelative:curfew\\curfew.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|c:\\users\\user\\documents\\github\\ohnocurfew\\curfew\\curfew\\scene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52DE6BAB-692B-4872-8C7D-4D90396F05E1}|curfew\\curfew.csproj|solutionrelative:curfew\\scene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,8 +34,22 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 8,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Scene.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Scene.cs",
+              "RelativeDocumentMoniker": "curfew\\Scene.cs",
+              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Scene.cs",
+              "RelativeToolTip": "curfew\\Scene.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAADwv5UAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T17:15:35.296Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -67,75 +81,63 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Player.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Player.cs",
+              "RelativeDocumentMoniker": "curfew\\Player.cs",
+              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Player.cs",
+              "RelativeToolTip": "curfew\\Player.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-13T00:10:16.175Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GameTiles.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\GameTiles.cs",
+              "RelativeDocumentMoniker": "curfew\\GameTiles.cs",
+              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\GameTiles.cs",
+              "RelativeToolTip": "curfew\\GameTiles.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAcwA0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-12T21:52:49.703Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Character.cs",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Character.cs",
               "RelativeDocumentMoniker": "curfew\\Character.cs",
               "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Character.cs",
               "RelativeToolTip": "curfew\\Character.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAAAEYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAQwEkAAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-12T11:12:02.564Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "curfew",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\curfew.csproj",
               "RelativeDocumentMoniker": "curfew\\curfew.csproj",
               "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\curfew.csproj",
               "RelativeToolTip": "curfew\\curfew.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-07-09T03:12:10.433Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Enemy.cs",
-              "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Enemy.cs",
-              "RelativeDocumentMoniker": "curfew\\Enemy.cs",
-              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Enemy.cs",
-              "RelativeToolTip": "curfew\\Enemy.cs",
-              "ViewState": "AgIAAEoAAAAAAAAAAAAgwFwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-08T18:55:15.552Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Scene.cs",
-              "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Scene.cs",
-              "RelativeDocumentMoniker": "curfew\\Scene.cs",
-              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Scene.cs",
-              "RelativeToolTip": "curfew\\Scene.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAAwJQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-08T17:15:35.296Z",
+              "WhenOpened": "2025-07-09T03:12:10.433Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Player.cs",
-              "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Player.cs",
-              "RelativeDocumentMoniker": "curfew\\Player.cs",
-              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Player.cs",
-              "RelativeToolTip": "curfew\\Player.cs",
-              "ViewState": "AgIAAF0AAAAAAAAAAAAowC4AAABAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-08T12:27:50.795Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "Game1.cs",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Game1.cs",
               "RelativeDocumentMoniker": "curfew\\Game1.cs",
               "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\OhnoCurfew\\curfew\\curfew\\Game1.cs",
               "RelativeToolTip": "curfew\\Game1.cs",
-              "ViewState": "AgIAADoAAAAAAAAAAAAqwBcAAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAADcAAAAAAAAAAAAQwEQAAABQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-07T07:26:49.027Z",
               "EditorCaption": ""

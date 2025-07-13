@@ -22,14 +22,16 @@ namespace curfew
         private int windowWidth;
         SpriteFont spriteFont;
 
+        Player player;
         MouseState previousMouseState;
         Rectangle startButton = new Rectangle(180, 420, 250, 40);
         Rectangle exitButton = new Rectangle(180, 510, 250, 40);
 
         bool hasCheckpointSave = false;
 
-        public Scene(string currentScene, Action exitCallback, ContentManager Content, SpriteBatch spriteBatch, int windowWidth, int windowHeight)
+        public Scene(Player player, string currentScene, Action exitCallback, ContentManager Content, SpriteBatch spriteBatch, int windowWidth, int windowHeight)
         {
+            this.player = player;
             this.currentScene = currentScene;
             this.exitCallback = exitCallback;
             this.Content = Content;
@@ -80,7 +82,7 @@ namespace curfew
             Console.WriteLine("In game");
         }
 
-        public void drawSelectScene(Player player, Texture2D collisionmapTexture, Texture2D backgroundTexture, Rectangle collisionmapDisplay, Rectangle backgroundDisplay, Color collisionmapColor, Color backgroundColor, List<Enemy> enemies)
+        public void drawSelectScene(Player player, GameTiles tiles, Texture2D backgroundTexture, Rectangle backgroundRectangle, Color backgroundColor)
         {
             switch (currentScene)
             {
@@ -89,7 +91,7 @@ namespace curfew
                     break;
 
                 case ("game"):
-                    drawgameScreen(player, collisionmapTexture, backgroundTexture, collisionmapDisplay, backgroundDisplay, collisionmapColor, backgroundColor, enemies);
+                    drawgameScreen(player, tiles, backgroundTexture, backgroundRectangle, backgroundColor);
                     break;
 
                 case ("settings"):
@@ -141,18 +143,11 @@ namespace curfew
             _spriteBatch.DrawString(spriteFont, "SETTINGS", new Vector2(180, 350), Color.White);
         }
 
-        protected void drawgameScreen(Player player, Texture2D collisionmapTexture, Texture2D backgroundDisplay, Rectangle collisionmapDisplay, Rectangle backgroundRectangle, Color collisionmapColor, Color backgroundColor, List<Enemy> enemies)
+        protected void drawgameScreen(Player player, GameTiles tiles, Texture2D backgroundDisplay, Rectangle backgroundRectangle, Color backgroundColor)
         {
             screenColor = Color.Magenta;
-            _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
-            player.Draw(_spriteBatch);
-
-            _spriteBatch.Draw(collisionmapTexture, collisionmapDisplay, collisionmapColor);
-            foreach (var enemy in enemies)
-            {
-                enemy.Draw(_spriteBatch);
-            }
-
+            // _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
+            _spriteBatch.Draw(player.charaTexture, new Vector2(player.xpos, player.ypos), player.sourceRectangle, Color.White);
         }
 
         public Color getColor()

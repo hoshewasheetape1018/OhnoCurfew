@@ -9,19 +9,19 @@ using System.Collections.Generic;
 namespace curfew
 {
 
-    //plan:
-    // Add HP, Physics, 
-    // Constructor: xpos, ypos
-
     internal class Character
     {
         //PLAYER PROPERTIES
-        int ypos;
-        int xpos;
-        int charaWidth;
-        int charaHeight;
-        int velocity;
 
+        internal int ypos;
+        internal int xpos;
+        internal int startXpos;
+        internal int startYpos;
+        internal int charaWidth;
+        internal int charaHeight;
+        internal int velocity;
+        internal Texture2D charaTexture;
+        internal Rectangle sourceRectangle;
 
         //PLAYER STATS
 
@@ -34,19 +34,22 @@ namespace curfew
 
 
         //PLAYER ATTRIBUTES + PHYSICS:
-        int moveSpeed;
-        float jumpSpeed = -12f;
-        float gravity = 0.55f;
-        float velocityY = 0f;
+        internal int moveSpeed = 3;
+        internal float jumpStrength = -12f;
+        internal float gravity = 0.55f;
+        internal float velocityY = 0f;
         int groundY;
+        int knockbackVelocity;
+
 
         //BOOL
-        bool isWalkRun;
-        bool onPlatform;
-        bool isDead;
-        bool isHit;
-        bool facingDirection; // right = false, left = true
-
+        internal bool isWalkRun;
+        internal bool onPlatform;
+        internal bool isDead;
+        internal bool isHit;
+        internal bool facingDirection; // right = false, left = true
+        internal bool isGrounded;
+        internal bool isJumping;
 
         // COLLISION BOX
         Rectangle collisionBox;
@@ -66,12 +69,17 @@ namespace curfew
         private int delay;
         private int frameWidth;
         private int frameHeight;
-        private Rectangle sourceRectangle;
+        private int knockbackDuration;
 
-        public Character(int xpos, int ypos, Rectangle charaDisplayRectangle)
+        public Character(int xpos, int ypos, Texture2D charaTexture, int windowWidth, int windowHeight)
         {
-            this.ypos = ypos;
             this.xpos = xpos;
+            this.ypos = xpos;
+
+            startXpos = xpos;
+            startYpos = ypos;
+
+            this.charaTexture = charaTexture;
             collisionBox = new Rectangle(xpos, ypos, charaWidth, charaHeight);
         }
 
@@ -80,7 +88,8 @@ namespace curfew
             charaWidth = width;
             charaHeight = height;
         }
-        public void characterPhysics(GameTiles tiles)
+
+        public void characterPhysics(GameTiles[] tiles)
         {
             // Check Collision
             foreach (GameTiles tile in tiles)
@@ -96,10 +105,45 @@ namespace curfew
             }
         }
 
-        public void characterDraw(Texture2D charaTexture)
+        public void characterState(string state, int idleStart, int idleLast, int walkStart, int walkLast, int jumpStart, int jumpLast, int fallStart, int fallLast, int attackStart, int attackLast, int hitStart, int hitLast, int deadStart, int deadLast)
         {
-            _spriteBatch.Draw(charaTexture, new Vector2(xpos, ypos), sourceRectangle, Color.White);
+            switch (state)
+            {
+                case ("idle"):
+                    Console.WriteLine("idle");
+                    Animate(idleStart, idleLast);
+                    break;
+                case ("walkrun"):
+                    Console.WriteLine("walkrun");
+                    Animate(walkStart, walkLast);
+                    break;
+                case ("jump"):
+                    Console.WriteLine("jump");
+                    Animate(jumpStart, jumpLast);
+
+                    break;
+                case ("fall"):
+                    Console.WriteLine("fall");
+                    Animate(fallStart, fallLast);
+                    break;
+                case ("attack"):
+                    Console.WriteLine("attack");
+                    Animate(attackStart, attackLast);
+                    break;
+                case ("hit"): // + add knockback
+                    Console.WriteLine("hit");
+                    Animate(hitStart, hitLast);
+                    break;
+                case ("dead"):
+                    Console.WriteLine("dead");
+                    Animate(deadStart, deadLast);
+                    break;
+                default:
+                    break;
+            }
+
         }
+
 
 
         void Animate(int startFrame, int endFrame)
@@ -134,6 +178,36 @@ namespace curfew
                 frameWidth,
                 frameHeight
             );
+        }
+
+        public void Jump(GameTiles tiles)
+        {
+            velocityY += gravity;
+            collisionBox.Y += (int)velocityY;
+
+            if (collisionBox.Intersects(tiles.tilesDisplay))
+            {
+                if (velocityY > 0)
+                {
+                    isGrounded = true;
+                    isJumping = false;
+                }
+                velocityY = 0;
+            }
+            velocityY = jumpStrength;
+            isJumping = true;
+            isGrounded = false;
+        }
+
+        public void Hit()
+        {
+            if (knockbackDuration > 0)
+            {
+                knockbackDuration -= knockbackVelocity;
+                xpos += knockbackVelocity;
+                ypos += knockbackVelocity;
+                return; // skip rest of movement while in knockback
+            }
         }
 
     }

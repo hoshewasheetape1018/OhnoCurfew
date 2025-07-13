@@ -9,14 +9,14 @@ using System.Collections.Generic;
 namespace curfew
 {
 
-    internal class Character
+    internal abstract class Character
     {
         //PLAYER PROPERTIES
 
         internal int ypos;
         internal int xpos;
-        internal int startXpos;
-        internal int startYpos;
+        internal int startXpos = 69;
+        internal int startYpos = 69;
         internal int charaWidth;
         internal int charaHeight;
         internal int velocity;
@@ -36,24 +36,26 @@ namespace curfew
 
         //PLAYER ATTRIBUTES + PHYSICS:
         internal int moveSpeed = 10;
-        internal float jumpStrength = -12f;
+        internal float jumpStrength = -20f;
         internal float gravity = 0.55f;
         internal float velocityY = 0f;
         int groundY;
         int knockbackVelocity;
-
+        internal SpriteEffects flip;
 
         //BOOL
         internal bool isWalkRun;
         internal bool onPlatform;
         internal bool isDead;
         internal bool isHit;
-        internal bool facingDirection; // right = false, left = true
+        internal bool facingLeft;
         internal bool isGrounded;
         internal bool isJumping;
+        internal bool isMoving;
+
 
         // COLLISION BOX
-        Rectangle collisionBox;
+        public Rectangle collisionBox;
 
         // OTHERS
         KeyboardState currentKeyState;
@@ -71,6 +73,7 @@ namespace curfew
         private int frameWidth;
         private int frameHeight;
         private int knockbackDuration;
+        private bool wasJumpingLastFrame = false;
 
         public Character(int xpos, int ypos, string state, Texture2D charaTexture)
         {
@@ -86,7 +89,7 @@ namespace curfew
             frameHeight = charaHeight;
 
 
-            collisionBox = new Rectangle(xpos, ypos, charaWidth, charaHeight);
+            collisionBox = new Rectangle(this.xpos, this.ypos, charaWidth, charaHeight);
         }
 
         public GameTiles getTiles(GameTiles tiles)
@@ -100,45 +103,99 @@ namespace curfew
             charaHeight = height;
         }
 
-        public void characterPhysics(GameTiles[] tiles)
+        public void characterPhysics(GameTiles[] tiles, KeyboardState key)
         {
-            // Check Collision
-            foreach (GameTiles tile in tiles)
-            {
-                Rectangle tileBox = tile.TilesDisplay;
+            // Apply gravity
+            velocityY += gravity;
+            ypos += (int)velocityY;
 
-                if (velocityY >= 0 && collisionBox.Intersects(tileBox))
+            // Update collision box
+            collisionBox.X = xpos;
+            collisionBox.Y = ypos;
+
+            // Ground check (land on tile)
+            isGrounded = false;
+            foreach (var tile in tiles)
+            {
+                if (collisionBox.Intersects(tile.TilesDisplay))
                 {
-                    groundY = tileBox.Top - charaHeight;
-                    onPlatform = true;
+                    ypos = tile.TilesDisplay.Top - charaHeight;
+                    velocityY = 0;
+                    isGrounded = true;
+                    isJumping = false;
+
+                    collisionBox.Y = ypos;
                     break;
                 }
             }
+
+            // Jump
+            ypos += (int)velocityY;
+            collisionBox.Y = ypos;
+
+            if ((key.IsKeyDown(Keys.Up) || key.IsKeyDown(Keys.Space)) && isGrounded && !wasJumpingLastFrame)
+            {
+                velocityY = jumpStrength;
+                isJumping = true;
+                isGrounded = false;
+            }
+
+            // Apply gravity
+            velocityY += gravity;
+
+            if (!isGrounded)
+            {
+                if (velocityY > 0)
+                    state = "fall";
+                else
+                    state = "jump";
+            }
+            else
+            {
+                state = "idle";
+            }
+            if (isMoving)
+            {
+                state = "walkrun";
+            }
+
+            isMoving = key.IsKeyDown(Keys.Left) || key.IsKeyDown(Keys.Right);
+
+            wasJumpingLastFrame = key.IsKeyDown(Keys.Up) || key.IsKeyDown(Keys.Space);
+
         }
 
-        public void characterState(string state, int idleStart, int idleLast, int walkStart, int walkLast, int jumpStart, int jumpLast, int fallStart, int fallLast, int attackStart, int attackLast, int hitStart, int hitLast, int deadStart, int deadLast)
+
+        public void characterState(string state, int idleStart, int idleLast, Texture2D charaIdle, int walkStart, int walkLast, Texture2D charaWalk, int jump, Texture2D charaJump, int fall, Texture2D charaFall, int attackStart, int attackLast, Texture2D charaAttack, int hitStart, int hitLast, Texture2D charaHit, int deadStart, int deadLast, Texture2D charaDead)
         {
             switch (state)
             {
                 case ("idle"):
+                    charaTexture = charaIdle;
                     Animate(idleStart, idleLast, 4);
                     break;
                 case ("walkrun"):
-                    Animate(walkStart, walkLast, 0);
+                    charaTexture = charaWalk;
+                    Animate(walkStart, walkLast, 4);
                     break;
                 case ("jump"):
-                    Animate(jumpStart, jumpLast, 4);
+                    charaTexture = charaJump;
+                    Animate(jump, jump, 1);
                     break;
                 case ("fall"):
-                    Animate(fallStart, fallLast, 4);
+                    charaTexture = charaFall;
+                    Animate(fall, fall, 1);
                     break;
                 case ("attack"):
+                    charaTexture = charaAttack;
                     Animate(attackStart, attackLast, 4);
                     break;
                 case ("hit"): // + add knockback
+                    charaTexture = charaHit;
                     Animate(hitStart, hitLast, 4);
                     break;
                 case ("dead"):
+                    charaTexture = charaDead;
                     Animate(deadStart, deadLast, 4);
                     break;
                 default:
@@ -182,24 +239,7 @@ namespace curfew
         }
 
 
-        public void Jump(GameTiles tiles)
-        {
-            velocityY += gravity;
-            collisionBox.Y += (int)velocityY;
 
-            if (collisionBox.Intersects(tiles.tilesDisplay))
-            {
-                if (velocityY > 0)
-                {
-                    isGrounded = true;
-                    isJumping = false;
-                }
-                velocityY = 0;
-            }
-            velocityY = jumpStrength;
-            isJumping = true;
-            isGrounded = false;
-        }
 
         public void Hit()
         {
@@ -212,6 +252,10 @@ namespace curfew
             }
         }
 
+        public void Draw(SpriteBatch _spriteBatch)
+        {
+            _spriteBatch.Draw(charaTexture, new Rectangle(xpos, ypos, 163, 163), sourceRectangle, Color.White, 0, Vector2.Zero, flip, 0);
+        }
     }
 }
 

@@ -19,37 +19,46 @@ namespace curfew
 
         public void Move(KeyboardState key)
         {
+            Console.WriteLine("Player moved to: " + this.xpos + ", " + this.ypos);
 
+            
             // Horizontal movement
             if (key.IsKeyDown(Keys.Left))
             {
                 xpos -= moveSpeed;
-                Console.WriteLine("Left");
-                Console.WriteLine(xpos);
+                facingLeft = true;
+                isMoving = true;
             }
             else if (key.IsKeyDown(Keys.Right))
             {
                 xpos += moveSpeed;
-                Console.WriteLine("Right");
-                Console.WriteLine(xpos);
-
+                facingLeft = false;
+                isMoving = true;
             }
 
-            // Jump input
-            if ((key.IsKeyDown(Keys.Up) || key.IsKeyDown(Keys.Space)) && isGrounded)
+
+            if (facingLeft)
             {
-                Jump(tiles);
+                flip = SpriteEffects.FlipHorizontally;
+            }
+            else { flip = SpriteEffects.None; }
+        }
 
+        public void checkXposOOB(int windowWidth)
+        {
+            if (xpos > windowWidth)
+            {
+                Console.WriteLine("Out of X bounds");
+                xpos = startXpos;
             }
 
-            // Out of bounds reset
+        }
+        public void checkYposOOB(int windowHeight)
+        {
             if (ypos > windowHeight)
             {
+                Console.WriteLine("Out of Y bounds");
                 ypos = startYpos;
-                xpos = startXpos;
-                velocityY = 0;
-                isJumping = false;
-                isGrounded = false;
             }
 
         }

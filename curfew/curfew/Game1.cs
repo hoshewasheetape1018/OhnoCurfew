@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace curfew
 {
@@ -35,8 +36,12 @@ namespace curfew
         Player player;
         Texture2D heroTexture;
 
+        //Player animations
+        Texture2D playerIdle;
+        Texture2D playerWalk;
+
         //Gametiles
-        GameTiles tiles;
+        GameTiles[] tiles = new GameTiles[1];
 
         //BG
         Texture2D backgroundTexture;
@@ -81,10 +86,12 @@ namespace curfew
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Load player
-            heroTexture = Content.Load<Texture2D>("idle");
+            playerIdle = Content.Load<Texture2D>("idle");
+            playerWalk = Content.Load<Texture2D>("HeroKnight");
             enemyTexture = Content.Load<Texture2D>("HeroKnight"); // reuse for now
             backgroundTexture = Content.Load<Texture2D>("levelmap");
-            player = new Player(200, 400, "idle", heroTexture);
+            player = new Player(200, 200, "idle", playerIdle);
+            Console.WriteLine("Player created at: " + player.xpos + ", " + player.ypos);
 
 
             //Load bg
@@ -105,10 +112,9 @@ namespace curfew
             pixel = new Texture2D(GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
 
-            tiles = new GameTiles(pixel, groundRect, new Rectangle(0, 0, 0, 0), Color.Brown);
+            tiles[0] = new GameTiles(pixel, groundRect, new Rectangle(0, 0, 0, 0), Color.Brown);
 
-            player.getTiles(tiles);
-
+            player.getTiles(tiles[0]);
             debug.playerInfo(player);
         }
 
@@ -118,10 +124,22 @@ namespace curfew
             KeyboardState key = Keyboard.GetState();
             prevKeyState = currentKeyState;
             currentKeyState = Keyboard.GetState();
-            player.characterState("idle", 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            player.characterState(
+                player.state, 0, 3, playerIdle,       // idle
+                0, 3, playerWalk,               // walk
+                0, playerIdle,                  // jump
+                0, playerIdle,                  // fall
+                0, 4, playerIdle,               // attack
+                0, 4, playerIdle,               // hit
+                0, 4, playerIdle                // dead
+            );
 
             debug.keyPressed(prevKeyState, currentKeyState, player);
             player.Move(currentKeyState);
+            player.characterPhysics(tiles, currentKeyState);
+            player.checkXposOOB(windowWidth);
+            player.checkYposOOB(windowHeight);
+            Console.WriteLine("Current State: " + player.state);
 
             base.Update(gameTime);
         }
@@ -130,8 +148,8 @@ namespace curfew
         {
             GraphicsDevice.Clear(screenColor);
             _spriteBatch.Begin();
-            scene.SelectScene(tiles, backgroundTexture, backgroundDisplay, backgroundColor);
-            _spriteBatch.Draw(tiles.tilesTexture, tiles.tilesDisplay, backgroundDisplay, backgroundColor);
+            scene.drawSelectScene(tiles[0], backgroundTexture, backgroundDisplay, backgroundColor);
+            _spriteBatch.Draw(tiles[0].tilesTexture, tiles[0].tilesDisplay, backgroundDisplay, backgroundColor);
             _spriteBatch.End();
             base.Draw(gameTime);
         }

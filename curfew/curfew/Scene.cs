@@ -22,11 +22,11 @@ namespace curfew
         private int windowWidth;
         SpriteFont spriteFont;
 
-        Player player;
         MouseState previousMouseState;
         Rectangle startButton = new Rectangle(180, 420, 250, 40);
         Rectangle exitButton = new Rectangle(180, 510, 250, 40);
 
+        Player player;
         bool hasCheckpointSave = false;
 
         public Scene(Player player, string currentScene, Action exitCallback, ContentManager Content, SpriteBatch spriteBatch, int windowWidth, int windowHeight)
@@ -39,6 +39,7 @@ namespace curfew
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
         }
+
 
         public string CurrentScene { get => currentScene; }
 
@@ -82,7 +83,7 @@ namespace curfew
             Console.WriteLine("In game");
         }
 
-        public void SelectScene(GameTiles tiles, Texture2D backgroundTexture, Rectangle backgroundRectangle, Color backgroundColor)
+        public void drawSelectScene(GameTiles tiles, Texture2D backgroundTexture, Rectangle backgroundRectangle, Color backgroundColor)
         {
             switch (currentScene)
             {
@@ -147,9 +148,8 @@ namespace curfew
         {
             screenColor = Color.Magenta;
             // _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
-            _spriteBatch.Draw(player.charaTexture, new Vector2(player.xpos, player.ypos), player.sourceRectangle, Color.White);
-            Console.WriteLine("Current Xpos: " + player.xpos);
-
+            player.Draw(_spriteBatch);
+            Console.WriteLine("Scene player xpos: " + player.xpos);
         }
 
         public Color getColor()

@@ -74,12 +74,14 @@ namespace curfew
         public Character(int xpos, int ypos, Texture2D charaTexture, int windowWidth, int windowHeight)
         {
             this.xpos = xpos;
-            this.ypos = xpos;
+            this.ypos = ypos;
 
             startXpos = xpos;
             startYpos = ypos;
 
             this.charaTexture = charaTexture;
+            charaWidth = charaTexture.Width;
+            charaHeight = charaTexture.Height;
             collisionBox = new Rectangle(xpos, ypos, charaWidth, charaHeight);
         }
 

@@ -147,7 +147,7 @@ namespace curfew
         {
             screenColor = Color.Magenta;
             // _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
-            _spriteBatch.Draw(player.charaTexture, new Vector2(player.xpos, player.ypos), player.sourceRectangle, Color.White);
+            _spriteBatch.Draw(player.charaTexture, new Vector2(player.xpos, player.ypos), Color.White);
         }
 
         public Color getColor()

@@ -63,10 +63,7 @@ namespace curfew
 
         protected override void Initialize()
         {
-            heroTexture = Content.Load<Texture2D>("HeroKnight");
-            enemyTexture = Content.Load<Texture2D>("HeroKnight"); // reuse for now
-            backgroundTexture = Content.Load<Texture2D>("levelmap");
-            player = new Player(200, 400, heroTexture, windowWidth, windowHeight);
+
             base.Initialize();
         }
 
@@ -77,9 +74,11 @@ namespace curfew
 
 
             // Load player
-            int heroWidth = heroTexture.Width / 10;
-            int heroHeight = heroTexture.Height / 9;
-            Rectangle heroStartRect = new Rectangle(25, 620, heroWidth - 40, heroHeight - 40);
+            heroTexture = Content.Load<Texture2D>("HeroKnight");
+            enemyTexture = Content.Load<Texture2D>("HeroKnight"); // reuse for now
+            backgroundTexture = Content.Load<Texture2D>("levelmap");
+            player = new Player(200, 400, heroTexture, windowWidth, windowHeight);
+
 
             //Load bg
             backgroundDisplay = new Rectangle(0, 0, backgroundTexture.Width, backgroundTexture.Height);
@@ -94,6 +93,9 @@ namespace curfew
             //MediaPlayer.Play(song);
             scene.SetAsset(titleBgtest, spriteFont);
             scene.selectScene();
+
+            // Debug
+            Debug(player);
         }
 
         protected override void Update(GameTime gameTime)
@@ -111,6 +113,32 @@ namespace curfew
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+
+        void Debug(Player player)
+        {
+            Console.WriteLine("Window width: " + windowWidth + " Window Height: " + windowHeight + " Xpos: " + player.xpos + " Ypos: " + player.ypos);
+
+            Console.WriteLine("Player height: " + player.charaHeight + " Player width: " + player.charaWidth);
+
+            if (player.xpos < windowWidth)
+            {
+                Console.WriteLine("Player Inbounds X position");
+            }
+            else
+            {
+                Console.WriteLine("Player Out of bounds x position");
+            }
+            if (player.ypos < windowHeight)
+            {
+                Console.WriteLine("Player Inbounds Y position");
+            }
+            else
+            {
+                Console.WriteLine("Player Out of bounds Y position");
+            }
+
         }
     }
 }

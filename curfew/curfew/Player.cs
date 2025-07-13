@@ -8,7 +8,7 @@ namespace curfew
     internal class Player : Character
 
     {
-        public Player(int xpos, int ypos, Texture2D charaTexture, int windowWidth, int windowHeight) : base(xpos, ypos, charaTexture, windowWidth, windowHeight)
+        public Player(int xpos, int ypos, string state, Texture2D charaTexture, int windowWidth, int windowHeight) : base(xpos, ypos, state, charaTexture, windowWidth, windowHeight)
         {
         }
 

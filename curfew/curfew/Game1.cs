@@ -74,10 +74,10 @@ namespace curfew
 
 
             // Load player
-            heroTexture = Content.Load<Texture2D>("HeroKnight");
+            heroTexture = Content.Load<Texture2D>("idle");
             enemyTexture = Content.Load<Texture2D>("HeroKnight"); // reuse for now
             backgroundTexture = Content.Load<Texture2D>("levelmap");
-            player = new Player(200, 400, heroTexture, windowWidth, windowHeight);
+            player = new Player(200, 400, "idle", heroTexture, windowWidth, windowHeight);
 
 
             //Load bg
@@ -101,6 +101,7 @@ namespace curfew
         protected override void Update(GameTime gameTime)
         {
             KeyboardState key = Keyboard.GetState();
+            player.characterState("idle", 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
             base.Update(gameTime);
         }

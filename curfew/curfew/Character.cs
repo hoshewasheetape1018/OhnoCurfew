@@ -22,6 +22,7 @@ namespace curfew
         internal int velocity;
         internal Texture2D charaTexture;
         internal Rectangle sourceRectangle;
+        internal string state;
 
         //PLAYER STATS
 
@@ -71,10 +72,11 @@ namespace curfew
         private int frameHeight;
         private int knockbackDuration;
 
-        public Character(int xpos, int ypos, Texture2D charaTexture, int windowWidth, int windowHeight)
+        public Character(int xpos, int ypos, string state, Texture2D charaTexture, int windowWidth, int windowHeight)
         {
             this.xpos = xpos;
             this.ypos = ypos;
+            this.state = state;
 
             startXpos = xpos;
             startYpos = ypos;
@@ -82,6 +84,10 @@ namespace curfew
             this.charaTexture = charaTexture;
             charaWidth = charaTexture.Width;
             charaHeight = charaTexture.Height;
+
+            frameWidth = charaWidth;
+            frameHeight = charaHeight;
+
             collisionBox = new Rectangle(xpos, ypos, charaWidth, charaHeight);
         }
 
@@ -112,33 +118,26 @@ namespace curfew
             switch (state)
             {
                 case ("idle"):
-                    Console.WriteLine("idle");
-                    Animate(idleStart, idleLast);
+                    Animate(idleStart, idleLast, 4);
                     break;
                 case ("walkrun"):
-                    Console.WriteLine("walkrun");
-                    Animate(walkStart, walkLast);
+                    Animate(walkStart, walkLast, 0);
                     break;
                 case ("jump"):
-                    Console.WriteLine("jump");
-                    Animate(jumpStart, jumpLast);
+                    Animate(jumpStart, jumpLast, 4);
 
                     break;
                 case ("fall"):
-                    Console.WriteLine("fall");
-                    Animate(fallStart, fallLast);
+                    Animate(fallStart, fallLast, 4);
                     break;
                 case ("attack"):
-                    Console.WriteLine("attack");
-                    Animate(attackStart, attackLast);
+                    Animate(attackStart, attackLast, 4);
                     break;
                 case ("hit"): // + add knockback
-                    Console.WriteLine("hit");
-                    Animate(hitStart, hitLast);
+                    Animate(hitStart, hitLast, 4);
                     break;
                 case ("dead"):
-                    Console.WriteLine("dead");
-                    Animate(deadStart, deadLast);
+                    Animate(deadStart, deadLast, 4);
                     break;
                 default:
                     break;
@@ -148,9 +147,8 @@ namespace curfew
 
 
 
-        void Animate(int startFrame, int endFrame)
+        void Animate(int startFrame, int endFrame, int framesPerRow)
         {
-            // Reset currentFrame if animation range changed
             if (startFrame != previousStartFrame)
             {
                 currentFrame = startFrame;
@@ -160,7 +158,7 @@ namespace curfew
 
             delay++;
 
-            if (delay > 4)
+            if (delay > 4) // animation speed
             {
                 currentFrame++;
 
@@ -170,17 +168,17 @@ namespace curfew
                 delay = 0;
             }
 
-            int framePerRow = 9;
-            int row = currentFrame / framePerRow;
-            int col = currentFrame % framePerRow;
+            int frameWidth = charaTexture.Width / framesPerRow;
+            int frameHeight = charaTexture.Height;
 
             sourceRectangle = new Rectangle(
-                col * frameWidth,
-                row * frameHeight,
+                currentFrame * frameWidth,
+                0,
                 frameWidth,
                 frameHeight
             );
         }
+
 
         public void Jump(GameTiles tiles)
         {

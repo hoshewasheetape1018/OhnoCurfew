@@ -39,3 +39,4 @@ C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows
 C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\Walk.xnb
 C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\levelmap.xnb
 C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\levelmapcollisionreal.xnb
+C:\Users\USER\Documents\GitHub\OhnoCurfew\curfew\curfew\bin\Debug\net8.0-windows\Content\idle.xnb

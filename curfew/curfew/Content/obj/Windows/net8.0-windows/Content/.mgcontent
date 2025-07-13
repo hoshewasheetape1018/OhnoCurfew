@@ -10,6 +10,7 @@
     <File>C:/Users/USER/Documents/GitHub/OhnoCurfew/curfew/curfew/Content/Fall.PNG</File>
     <File>C:/Users/USER/Documents/GitHub/OhnoCurfew/curfew/curfew/Content/gameFont.spritefont</File>
     <File>C:/Users/USER/Documents/GitHub/OhnoCurfew/curfew/curfew/Content/HeroKnight.png</File>
+    <File>C:/Users/USER/Documents/GitHub/OhnoCurfew/curfew/curfew/Content/idle.png</File>
     <File>C:/Users/USER/Documents/GitHub/OhnoCurfew/curfew/curfew/Content/Jump.png</File>
     <File>C:/Users/USER/Documents/GitHub/OhnoCurfew/curfew/curfew/Content/levelcolmap.png</File>
     <File>C:/Users/USER/Documents/GitHub/OhnoCurfew/curfew/curfew/Content/levelmap.png</File>
@@ -19,6 +20,7 @@
     <File>C:/Users/USER/Documents/GitHub/OhnoCurfew/curfew/curfew/Content/Walk.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

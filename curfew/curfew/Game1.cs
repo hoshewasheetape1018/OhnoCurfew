@@ -53,6 +53,10 @@ namespace curfew
         KeyboardState prevKeyState;
         KeyboardState currentKeyState;
 
+        //Test tile
+        Texture2D pixel;
+        Rectangle groundRect;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -68,7 +72,7 @@ namespace curfew
         protected override void Initialize()
         {
             debug = new Debug(windowWidth, windowHeight);
-
+            groundRect = new Rectangle(0, windowHeight - 100, windowWidth, 100);
             base.Initialize();
         }
 
@@ -80,7 +84,7 @@ namespace curfew
             heroTexture = Content.Load<Texture2D>("idle");
             enemyTexture = Content.Load<Texture2D>("HeroKnight"); // reuse for now
             backgroundTexture = Content.Load<Texture2D>("levelmap");
-            player = new Player(200, 400, "idle", heroTexture, windowWidth, windowHeight);
+            player = new Player(200, 400, "idle", heroTexture);
 
 
             //Load bg
@@ -95,8 +99,15 @@ namespace curfew
 
             //MediaPlayer.Play(song);
             scene.SetAsset(titleBgtest, spriteFont);
-            scene.selectScene();
 
+
+            // load tile ?
+            pixel = new Texture2D(GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { Color.White });
+
+            tiles = new GameTiles(pixel, groundRect, new Rectangle(0, 0, 0, 0), Color.Brown);
+
+            player.getTiles(tiles);
 
             debug.playerInfo(player);
         }
@@ -108,10 +119,10 @@ namespace curfew
             prevKeyState = currentKeyState;
             currentKeyState = Keyboard.GetState();
             player.characterState("idle", 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            debug.playerState(player);
 
+            debug.keyPressed(prevKeyState, currentKeyState, player);
+            player.Move(currentKeyState);
 
-            player.Move(key);
             base.Update(gameTime);
         }
 
@@ -119,9 +130,9 @@ namespace curfew
         {
             GraphicsDevice.Clear(screenColor);
             _spriteBatch.Begin();
-            scene.drawSelectScene(player, tiles, backgroundTexture, backgroundDisplay, backgroundColor);
+            scene.SelectScene(tiles, backgroundTexture, backgroundDisplay, backgroundColor);
+            _spriteBatch.Draw(tiles.tilesTexture, tiles.tilesDisplay, backgroundDisplay, backgroundColor);
             _spriteBatch.End();
-
             base.Draw(gameTime);
         }
 

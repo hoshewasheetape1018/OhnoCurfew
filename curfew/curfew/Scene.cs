@@ -82,7 +82,7 @@ namespace curfew
             Console.WriteLine("In game");
         }
 
-        public void drawSelectScene(Player player, GameTiles tiles, Texture2D backgroundTexture, Rectangle backgroundRectangle, Color backgroundColor)
+        public void SelectScene(GameTiles tiles, Texture2D backgroundTexture, Rectangle backgroundRectangle, Color backgroundColor)
         {
             switch (currentScene)
             {
@@ -91,7 +91,7 @@ namespace curfew
                     break;
 
                 case ("game"):
-                    drawgameScreen(player, tiles, backgroundTexture, backgroundRectangle, backgroundColor);
+                    drawgameScreen(tiles, backgroundTexture, backgroundRectangle, backgroundColor);
                     break;
 
                 case ("settings"):
@@ -143,11 +143,13 @@ namespace curfew
             _spriteBatch.DrawString(spriteFont, "SETTINGS", new Vector2(180, 350), Color.White);
         }
 
-        protected void drawgameScreen(Player player, GameTiles tiles, Texture2D backgroundDisplay, Rectangle backgroundRectangle, Color backgroundColor)
+        protected void drawgameScreen(GameTiles tiles, Texture2D backgroundDisplay, Rectangle backgroundRectangle, Color backgroundColor)
         {
             screenColor = Color.Magenta;
             // _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
             _spriteBatch.Draw(player.charaTexture, new Vector2(player.xpos, player.ypos), player.sourceRectangle, Color.White);
+            Console.WriteLine("Current Xpos: " + player.xpos);
+
         }
 
         public Color getColor()

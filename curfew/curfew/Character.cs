@@ -35,7 +35,7 @@ namespace curfew
 
 
         //PLAYER ATTRIBUTES + PHYSICS:
-        internal int moveSpeed = 3;
+        internal int moveSpeed = 10;
         internal float jumpStrength = -12f;
         internal float gravity = 0.55f;
         internal float velocityY = 0f;
@@ -59,7 +59,7 @@ namespace curfew
         KeyboardState currentKeyState;
         KeyboardState prevKeyState;
         private SpriteBatch _spriteBatch;
-
+        internal GameTiles tiles;
 
         int jumpBufferTime = 6;
         int jumpBufferCounter = 0;
@@ -72,14 +72,11 @@ namespace curfew
         private int frameHeight;
         private int knockbackDuration;
 
-        public Character(int xpos, int ypos, string state, Texture2D charaTexture, int windowWidth, int windowHeight)
+        public Character(int xpos, int ypos, string state, Texture2D charaTexture)
         {
             this.xpos = xpos;
             this.ypos = ypos;
             this.state = state;
-
-            startXpos = xpos;
-            startYpos = ypos;
 
             this.charaTexture = charaTexture;
             charaWidth = charaTexture.Width;
@@ -88,7 +85,13 @@ namespace curfew
             frameWidth = charaWidth;
             frameHeight = charaHeight;
 
+
             collisionBox = new Rectangle(xpos, ypos, charaWidth, charaHeight);
+        }
+
+        public GameTiles getTiles(GameTiles tiles)
+        {
+            return tiles;
         }
 
         public void getcharaSize(int width, int height)
@@ -125,7 +128,6 @@ namespace curfew
                     break;
                 case ("jump"):
                     Animate(jumpStart, jumpLast, 4);
-
                     break;
                 case ("fall"):
                     Animate(fallStart, fallLast, 4);
@@ -212,3 +214,5 @@ namespace curfew
 
     }
 }
+
+

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace curfew
         int windowWidth;
         int windowHeight;
         bool checkState = false;
+
 
 
         public Debug(int windowWidth, int windowHeight)
@@ -58,15 +60,16 @@ namespace curfew
             }
 
         }
-
-        public void keyPressed(KeyboardState prevKeyState, KeyboardState currentKeyState)
+        public void keyPressed(KeyboardState prevKeyState, KeyboardState currentKeyState, Player player)
         {
-
-
-            if (prevKeyState != currentKeyState)
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
             {
-                Console.WriteLine(currentKeyState.ToString());
+                if (prevKeyState.IsKeyUp(key) && currentKeyState.IsKeyDown(key))
+                {
+                    Console.WriteLine("Key just pressed: " + key.ToString());
+                }
             }
         }
+
     }
 }

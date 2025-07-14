@@ -15,12 +15,6 @@ namespace curfew
         Debug debug;
 
 
-        // Camera
-        private Matrix cameraMatrix;
-        private Vector2 cameraPosition;
-        private Vector2 cameraOrigin;
-        private const int MAP_WIDTH = 3072;
-        private const int MAP_HEIGHT = 864;
 
         // Window settings
         float preciseScale = 1.25f;
@@ -62,6 +56,14 @@ namespace curfew
         Texture2D pixel;
         Rectangle groundRect;
 
+        //Camera
+        Matrix camPos;
+        private Vector2 cameraTarget; 
+        private Vector2 cameraPosition; 
+        private float cameraLerpSpeed = 0.055f;
+        private const int MAP_WIDTH = 3072;
+        private const int MAP_HEIGHT = 864;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -78,6 +80,7 @@ namespace curfew
         {
             debug = new Debug(windowWidth, windowHeight);
             groundRect = new Rectangle(0, windowHeight - 100, windowWidth, 100);
+            camPos = Matrix.Identity;
             base.Initialize();
         }
 
@@ -92,6 +95,8 @@ namespace curfew
             backgroundTexture = Content.Load<Texture2D>("levelmap");
             player = new Player(200, 200, "idle", playerIdle);
             Console.WriteLine("Player created at: " + player.xpos + ", " + player.ypos);
+
+
 
 
             //Load bg
@@ -125,7 +130,7 @@ namespace curfew
             prevKeyState = currentKeyState;
             currentKeyState = Keyboard.GetState();
             player.characterState(
-                player.state, 0, 3, playerIdle,       // idle
+                player.state, 0, 3, playerIdle, // idle
                 0, 3, playerWalk,               // walk
                 0, playerIdle,                  // jump
                 0, playerIdle,                  // fall
@@ -141,14 +146,32 @@ namespace curfew
             player.checkYposOOB(windowHeight);
             Console.WriteLine("Current State: " + player.state);
 
+            int halfScreenW = windowWidth / 2;
+            int halfScreenH = windowHeight / 2;
+
+            // Calculate the target position based on player's center
+            cameraTarget = new Vector2(
+                player.xpos + player.charaWidth / 2 - halfScreenW,
+                player.ypos + player.charaHeight / 2 - halfScreenH
+            );
+
+            // Clamp bounds
+            cameraTarget.X = MathHelper.Clamp(cameraTarget.X, 0, MAP_WIDTH - windowWidth);
+            cameraTarget.Y = MathHelper.Clamp(cameraTarget.Y, 0, MAP_HEIGHT - windowHeight);
+
+            // Lerp
+            cameraPosition = Vector2.Lerp(cameraPosition, cameraTarget, cameraLerpSpeed);
+
+            // Create camera transform
+            camPos = Matrix.CreateTranslation(new Vector3(-cameraPosition, 0));
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(screenColor);
-            _spriteBatch.Begin();
-            scene.drawSelectScene(tiles[0], backgroundTexture, backgroundDisplay, backgroundColor);
+            scene.drawSelectScene(camPos, tiles[0], backgroundTexture, backgroundDisplay, backgroundColor);
             _spriteBatch.Draw(tiles[0].tilesTexture, tiles[0].tilesDisplay, backgroundDisplay, backgroundColor);
             _spriteBatch.End();
             base.Draw(gameTime);

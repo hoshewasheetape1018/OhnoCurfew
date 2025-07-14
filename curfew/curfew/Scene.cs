@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 
@@ -83,7 +84,7 @@ namespace curfew
             Console.WriteLine("In game");
         }
 
-        public void drawSelectScene(GameTiles tiles, Texture2D backgroundTexture, Rectangle backgroundRectangle, Color backgroundColor)
+        public void drawSelectScene(Matrix camPos, GameTiles tiles, Texture2D backgroundTexture, Rectangle backgroundRectangle, Color backgroundColor)
         {
             switch (currentScene)
             {
@@ -92,7 +93,7 @@ namespace curfew
                     break;
 
                 case ("game"):
-                    drawgameScreen(tiles, backgroundTexture, backgroundRectangle, backgroundColor);
+                    drawgameScreen(camPos, tiles, backgroundTexture, backgroundRectangle, backgroundColor);
                     break;
 
                 case ("settings"):
@@ -115,7 +116,7 @@ namespace curfew
             screenColor = Color.Red;
             MouseState mouse = Mouse.GetState();
             Point mousePoint = new Point(mouse.X, mouse.Y);
-
+            _spriteBatch.Begin();
             _spriteBatch.Draw(titleBg, new Rectangle(0, 0, windowWidth, windowHeight), Color.White);
 
             Color startColor = startButton.Contains(mousePoint) ? Color.Blue : Color.White;
@@ -144,10 +145,13 @@ namespace curfew
             _spriteBatch.DrawString(spriteFont, "SETTINGS", new Vector2(180, 350), Color.White);
         }
 
-        protected void drawgameScreen(GameTiles tiles, Texture2D backgroundDisplay, Rectangle backgroundRectangle, Color backgroundColor)
+        protected void drawgameScreen(Matrix camPos, GameTiles tiles, Texture2D backgroundDisplay, Rectangle backgroundRectangle, Color backgroundColor)
         {
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, camPos);
             screenColor = Color.Magenta;
-            // _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
+            _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
+            //load cam
+            camPos.Translation = new Vector3(player.xpos, player.ypos, camPos.Translation.Z);
             player.Draw(_spriteBatch);
             Console.WriteLine("Scene player xpos: " + player.xpos);
         }

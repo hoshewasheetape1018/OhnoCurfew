@@ -24,7 +24,7 @@ namespace curfew
 
         public void playerInfo(Player player)
         {
-            //Console.WriteLine("Window width: " + windowWidth + " Window Height: " + windowHeight + " Xpos in Game1: " + player.xpos + " Ypos in Game1: " + player.ypos);
+            Console.WriteLine("Window width: " + windowWidth + " Window Height: " + windowHeight + " Xpos in Game1: " + player.xpos + " Ypos in Game1: " + player.ypos);
 
             //Console.WriteLine("Player height: " + player.charaHeight + " Player width: " + player.charaWidth);
 

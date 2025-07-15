@@ -45,6 +45,7 @@ namespace curfew
         // Enemies
         Texture2D enemyTexture;
         Enemy enemy;
+        List<Enemy> enemies = new List<Enemy>();
 
         Character charatest;
 
@@ -100,7 +101,6 @@ namespace curfew
             );
             Console.WriteLine("Player created at: " + player.xpos + ", " + player.ypos);
 
-           
 
             // Load enemies
             enemyTexture = Content.Load<Texture2D>("HeroKnight");
@@ -108,6 +108,19 @@ namespace curfew
             enemy.setStateTexture(
                playerIdle, playerWalk, playerIdle, playerIdle, playerIdle, playerIdle, playerIdle
            );
+
+            enemies.Add(new Enemy(20, 0, "idle", playerIdle));
+            enemies.Add(new Enemy(950, 0, "idle", playerIdle));
+            enemies.Add(new Enemy(130, 0, "idle", playerIdle));
+            enemies.Add(new Enemy(900, 0, "idle", playerIdle));
+
+
+            foreach (Enemy lenemy in enemies)
+            {
+                lenemy.setStateTexture(
+                   playerIdle, playerWalk, playerIdle, playerIdle, playerIdle, playerIdle, playerIdle
+               );
+            }
 
             Console.WriteLine("Enemy created at: " + enemy.xpos + ", " + enemy.ypos);
 
@@ -144,19 +157,19 @@ namespace curfew
             //enemies[0].characterState(
             //    enemies[0].state, playerIdle, playerWalk, playerIdle, playerIdle, playerIdle, playerIdle, playerIdle
             //);
-           // if(scene.CurrentScene == "game") {
+            if(scene.CurrentScene == "game") {
 
             Camera();
                 player.Update(tiles, currentKeyState);
-                charatest.Update(tiles);
                 enemy.Update(tiles);
+                foreach(Enemy uenemy in enemies)
+                {
+                    uenemy.Update(tiles);
+                }
 
-               // debug.playerInfo(player);
-            //debug.enemyInfo(player, enemies);
+            }
 
-          //  }
-
-
+            debug.playerInfo(player);
             base.Update(gameTime);
         }
 
@@ -167,7 +180,10 @@ namespace curfew
             _spriteBatch.Draw(tiles[0].tilesTexture, tiles[0].tilesDisplay, backgroundDisplay, backgroundColor);
             player.Draw(_spriteBatch);
             enemy.Draw(_spriteBatch);
-            
+            foreach(Enemy lenemyd in enemies)
+            {
+                lenemyd.Draw(_spriteBatch);
+            }
             _spriteBatch.End();
             base.Draw(gameTime);
         }

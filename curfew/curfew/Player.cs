@@ -23,6 +23,7 @@ namespace curfew
             characterState();
             keyboardInput(key);
             physics.ApplyPhysics(tiles[0], key);
+            resetPlayerPos(windowHeight);
 
         }
 
@@ -54,27 +55,24 @@ namespace curfew
             }
 
             wasJumpingLastFrame = jump;
+            flip = facingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
 
 
             // DEBUG
-            Console.WriteLine($"isMoving: {isMoving}, isGrounded: {isGrounded}, state: {state}");
+            //Console.WriteLine($"isMoving: {isMoving}, isGrounded: {isGrounded}, state: {state}");
         }
 
-        public void checkXposOOB(int windowWidth)
+        public void resetPlayerPos(int windowHeight)
         {
-            if (xpos > windowWidth)
+            if ( ypos > 1000)
             {
-                Console.WriteLine("Out of X bounds");
-                xpos = startXpos;
-            }
-
-        }
-        public void checkYposOOB(int windowHeight)
-        {
-            if (ypos > windowHeight)
-            {
-                Console.WriteLine("Out of Y bounds");
+                Console.WriteLine("reset");
                 ypos = startYpos;
+                xpos = startXpos;
+                velocityY = 0;
+                isJumping = false;
+                isGrounded = false;
             }
 
         }

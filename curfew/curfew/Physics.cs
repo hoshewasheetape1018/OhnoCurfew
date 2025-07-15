@@ -11,8 +11,8 @@ namespace curfew
     internal class Physics
     {
         // Physics values
-        internal float gravity = 0.55f;
-        internal float jumpStrength = -20f;
+        internal float gravity = 0.65f;
+        internal float jumpStrength = -10f;
 
         private Character chara;
 
@@ -27,7 +27,19 @@ namespace curfew
         {
 
             float previousY = chara.ypos;
-            chara.velocityY += gravity;
+            if (chara.velocityY > 0) // falling
+            {
+                chara.velocityY += gravity * 1.5f; // Fall multiplier
+            }
+            else if (chara.velocityY < 0) // jumping upward
+            {
+                chara.velocityY += gravity * 0.75f; // Optional: slower gravity when rising
+            }
+            else
+            {
+                chara.velocityY += gravity; // idle? probably won't hit this much
+            }
+
             chara.ypos += (int)chara.velocityY;
 
             // Update collision box
@@ -61,14 +73,13 @@ namespace curfew
             }
 
 
-
         }
 
 
         // Jump
         public void Jump()
             {
-            Console.WriteLine("Called");
+            Console.WriteLine("Called Jump in Physics");
                 chara.velocityY = jumpStrength;
                 chara.isJumping = true;
                 chara.isGrounded = false;

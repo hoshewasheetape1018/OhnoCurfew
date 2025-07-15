@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Intrinsics.X86;
 
 namespace curfew
 {
@@ -16,32 +17,38 @@ namespace curfew
             this.xpos = xpos;
             this.ypos = ypos;
         }
-
-        public void Move(KeyboardState key)
+        public void keyboardInput(KeyboardState key)
         {
-            Console.WriteLine("Player moved to: " + this.xpos + ", " + this.ypos);
+            isMoving = false;
+            bool left = key.IsKeyDown(Keys.Left);
+            bool right = key.IsKeyDown(Keys.Right);
+            bool jump = key.IsKeyDown(Keys.Up) || key.IsKeyDown(Keys.Space);
 
-            
-            // Horizontal movement
-            if (key.IsKeyDown(Keys.Left))
+
+            if (left)
             {
                 xpos -= moveSpeed;
                 facingLeft = true;
                 isMoving = true;
             }
-            else if (key.IsKeyDown(Keys.Right))
+            else if (right)
             {
                 xpos += moveSpeed;
                 facingLeft = false;
                 isMoving = true;
+
             }
 
-
-            if (facingLeft)
+            if (jump && isGrounded && !wasJumpingLastFrame)
             {
-                flip = SpriteEffects.FlipHorizontally;
+                physics.Jump();
             }
-            else { flip = SpriteEffects.None; }
+
+            wasJumpingLastFrame = jump;
+
+
+            // DEBUG
+            Console.WriteLine($"isMoving: {isMoving}, isGrounded: {isGrounded}, state: {state}");
         }
 
         public void checkXposOOB(int windowWidth)

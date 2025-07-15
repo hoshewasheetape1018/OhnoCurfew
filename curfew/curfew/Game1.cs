@@ -17,7 +17,6 @@ namespace curfew
 
 
         // Window settings
-        float preciseScale = 1.25f;
         public int windowWidth;
         public int windowHeight;
 
@@ -25,6 +24,7 @@ namespace curfew
         SpriteFont spriteFont;
         Texture2D titleBgtest;
         Song song;
+
 
         // Player
         Player player;
@@ -44,6 +44,7 @@ namespace curfew
 
         // Enemies
         Texture2D enemyTexture;
+        List<Enemy> enemies = new List<Enemy>();
 
 
         // Scene manager
@@ -70,8 +71,8 @@ namespace curfew
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            windowWidth = (int)Math.Ceiling(1920f / preciseScale);
-            windowHeight = (int)Math.Ceiling(1080f / preciseScale);
+            windowWidth = 1536;
+            windowHeight = 864;
             _graphics.PreferredBackBufferWidth = windowWidth;
             _graphics.PreferredBackBufferHeight = windowHeight;
         }
@@ -93,10 +94,14 @@ namespace curfew
             playerWalk = Content.Load<Texture2D>("HeroKnight");
             enemyTexture = Content.Load<Texture2D>("HeroKnight"); // reuse for now
             backgroundTexture = Content.Load<Texture2D>("levelmap");
-            player = new Player(200, 200, "idle", playerIdle);
+
+
+            player = new Player(50, 0, "idle", playerIdle);
             Console.WriteLine("Player created at: " + player.xpos + ", " + player.ypos);
 
-
+            // Load enemies
+            enemies.Add(new Enemy(0, 0, "idle", enemyTexture));
+            Console.WriteLine("Enemy created at: " + enemies[0].xpos + ", " + enemies[0].ypos);
 
 
             //Load bg
@@ -104,7 +109,7 @@ namespace curfew
             backgroundColor = Color.White;
 
             // Load scene
-            scene = new Scene(player, "title", Exit, Content, _spriteBatch, windowWidth, windowHeight);
+            scene = new Scene(player, enemies, "title", Exit, Content, _spriteBatch, windowWidth, windowHeight);
             titleBgtest = Content.Load<Texture2D>("titlescreenplaceholder");
             spriteFont = Content.Load<SpriteFont>("gameFont");
             song = Content.Load<Song>("8bit");
@@ -115,12 +120,9 @@ namespace curfew
 
             // load tile ?
             pixel = new Texture2D(GraphicsDevice, 1, 1);
-            pixel.SetData(new[] { Color.White });
-
+            pixel.SetData(new[] { Color.Red });
             tiles[0] = new GameTiles(pixel, groundRect, new Rectangle(0, 0, 0, 0), Color.Brown);
 
-            player.getTiles(tiles[0]);
-            debug.playerInfo(player);
         }
 
         protected override void Update(GameTime gameTime)
@@ -130,21 +132,16 @@ namespace curfew
             prevKeyState = currentKeyState;
             currentKeyState = Keyboard.GetState();
             player.characterState(
-                player.state, 0, 3, playerIdle, // idle
-                0, 3, playerWalk,               // walk
-                0, playerIdle,                  // jump
-                0, playerIdle,                  // fall
-                0, 4, playerIdle,               // attack
-                0, 4, playerIdle,               // hit
-                0, 4, playerIdle                // dead
+                player.state, playerIdle, playerWalk, playerIdle, playerIdle, playerIdle, playerIdle, playerIdle
             );
-
-            debug.keyPressed(prevKeyState, currentKeyState, player);
-            player.Move(currentKeyState);
-            player.characterPhysics(tiles, currentKeyState);
+            enemies[0].characterState(
+                enemies[0].state, playerIdle, playerWalk, playerIdle, playerIdle, playerIdle, playerIdle, playerIdle
+            );
+            if(scene.CurrentScene == "game") {
+            //debug.keyPressed(prevKeyState, currentKeyState, player);
+            //player.Move(currentKeyState);
             player.checkXposOOB(windowWidth);
             player.checkYposOOB(windowHeight);
-            Console.WriteLine("Current State: " + player.state);
 
             int halfScreenW = windowWidth / 2;
             int halfScreenH = windowHeight / 2;
@@ -164,6 +161,29 @@ namespace curfew
 
             // Create camera transform
             camPos = Matrix.CreateTranslation(new Vector3(-cameraPosition, 0));
+            
+            
+            player.physics.ApplyPhysics(tiles[0], currentKeyState);
+                
+                player.keyboardInput(currentKeyState);
+                enemies[0].physics.ApplyPhysics(tiles[0], currentKeyState);
+
+                foreach (Enemy enemy in enemies)
+            {
+                enemy.CheckIfHit(player.attackHitbox); // only if the player is attacking
+            }
+
+                   //Gameplay
+            if (player.isAttacking)
+            {
+                foreach (Enemy e in enemies)
+                    e.CheckIfHit(player.attackHitbox);
+            }
+               // debug.playerInfo(player);
+            //debug.enemyInfo(player, enemies);
+
+            }
+
 
             base.Update(gameTime);
         }
@@ -173,6 +193,8 @@ namespace curfew
             GraphicsDevice.Clear(screenColor);
             scene.drawSelectScene(camPos, tiles[0], backgroundTexture, backgroundDisplay, backgroundColor);
             _spriteBatch.Draw(tiles[0].tilesTexture, tiles[0].tilesDisplay, backgroundDisplay, backgroundColor);
+            if (player.isAttacking)
+                _spriteBatch.Draw(tiles[0].tilesTexture, player.attackHitbox, Color.Red * 0.5f);
             _spriteBatch.End();
             base.Draw(gameTime);
         }

@@ -28,11 +28,13 @@ namespace curfew
         Rectangle exitButton = new Rectangle(180, 510, 250, 40);
 
         Player player;
+        List<Enemy> enemies;
         bool hasCheckpointSave = false;
 
-        public Scene(Player player, string currentScene, Action exitCallback, ContentManager Content, SpriteBatch spriteBatch, int windowWidth, int windowHeight)
+        public Scene(Player player, List<Enemy> enemies, string currentScene, Action exitCallback, ContentManager Content, SpriteBatch spriteBatch, int windowWidth, int windowHeight)
         {
             this.player = player;
+            this.enemies = enemies;
             this.currentScene = currentScene;
             this.exitCallback = exitCallback;
             this.Content = Content;
@@ -149,11 +151,14 @@ namespace curfew
         {
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, camPos);
             screenColor = Color.Magenta;
-            _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
+           // _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
             //load cam
             camPos.Translation = new Vector3(player.xpos, player.ypos, camPos.Translation.Z);
             player.Draw(_spriteBatch);
-            Console.WriteLine("Scene player xpos: " + player.xpos);
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.Draw(_spriteBatch);
+            }
         }
 
         public Color getColor()

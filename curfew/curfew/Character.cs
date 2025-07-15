@@ -23,6 +23,8 @@ namespace curfew
         internal Texture2D charaTexture;
         internal Rectangle sourceRectangle;
         internal string state;
+        internal SpriteEffects flip;
+
 
         //PLAYER STATS
 
@@ -32,16 +34,16 @@ namespace curfew
 
         //ATTACK
         int attack;
+        public Rectangle attackHitbox;
+        public int attackDuration = 10;
+        internal int attackTimer = 0;
 
-
-        //PLAYER ATTRIBUTES + PHYSICS:
+        //PHYSICS
+        public Physics physics;
         internal int moveSpeed = 10;
         internal float jumpStrength = -20f;
-        internal float gravity = 0.55f;
         internal float velocityY = 0f;
-        int groundY;
-        int knockbackVelocity;
-        internal SpriteEffects flip;
+
 
         //BOOL
         internal bool isWalkRun;
@@ -52,19 +54,11 @@ namespace curfew
         internal bool isGrounded;
         internal bool isJumping;
         internal bool isMoving;
+        public bool isAttacking;
 
 
         // COLLISION BOX
         public Rectangle collisionBox;
-
-        // OTHERS
-        KeyboardState currentKeyState;
-        KeyboardState prevKeyState;
-        private SpriteBatch _spriteBatch;
-        internal GameTiles tiles;
-
-        int jumpBufferTime = 6;
-        int jumpBufferCounter = 0;
 
         //ANIMATION
         private int currentFrame;
@@ -73,7 +67,15 @@ namespace curfew
         private int frameWidth;
         private int frameHeight;
         private int knockbackDuration;
-        private bool wasJumpingLastFrame = false;
+        internal bool wasJumpingLastFrame = false;
+
+        // OTHERS
+        KeyboardState currentKeyState;
+        KeyboardState prevKeyState;
+        private SpriteBatch _spriteBatch;
+
+        int jumpBufferTime = 6;
+        int jumpBufferCounter = 0;
 
         public Character(int xpos, int ypos, string state, Texture2D charaTexture)
         {
@@ -82,121 +84,46 @@ namespace curfew
             this.state = state;
 
             this.charaTexture = charaTexture;
+
+
             charaWidth = charaTexture.Width;
             charaHeight = charaTexture.Height;
-
-            frameWidth = charaWidth;
-            frameHeight = charaHeight;
-
-
-            collisionBox = new Rectangle(this.xpos, this.ypos, charaWidth, charaHeight);
-        }
-
-        public GameTiles getTiles(GameTiles tiles)
-        {
-            return tiles;
-        }
-
-        public void getcharaSize(int width, int height)
-        {
-            charaWidth = width;
-            charaHeight = height;
-        }
-
-        public void characterPhysics(GameTiles[] tiles, KeyboardState key)
-        {
-            // Apply gravity
-            velocityY += gravity;
-            ypos += (int)velocityY;
-
-            // Update collision box
-            collisionBox.X = xpos;
-            collisionBox.Y = ypos;
-
-            // Ground check (land on tile)
-            isGrounded = false;
-            foreach (var tile in tiles)
-            {
-                if (collisionBox.Intersects(tile.TilesDisplay))
-                {
-                    ypos = tile.TilesDisplay.Top - charaHeight;
-                    velocityY = 0;
-                    isGrounded = true;
-                    isJumping = false;
-
-                    collisionBox.Y = ypos;
-                    break;
-                }
-            }
-
-            // Jump
-            ypos += (int)velocityY;
-            collisionBox.Y = ypos;
-
-            if ((key.IsKeyDown(Keys.Up) || key.IsKeyDown(Keys.Space)) && isGrounded && !wasJumpingLastFrame)
-            {
-                velocityY = jumpStrength;
-                isJumping = true;
-                isGrounded = false;
-            }
-
-            // Apply gravity
-            velocityY += gravity;
-
-            if (!isGrounded)
-            {
-                if (velocityY > 0)
-                    state = "fall";
-                else
-                    state = "jump";
-            }
-            else
-            {
-                state = "idle";
-            }
-            if (isMoving)
-            {
-                state = "walkrun";
-            }
-
-            isMoving = key.IsKeyDown(Keys.Left) || key.IsKeyDown(Keys.Right);
-
-            wasJumpingLastFrame = key.IsKeyDown(Keys.Up) || key.IsKeyDown(Keys.Space);
+            collisionBox = new Rectangle(xpos, ypos, charaWidth, charaHeight);
+            physics = new Physics(this);
 
         }
 
-
-        public void characterState(string state, int idleStart, int idleLast, Texture2D charaIdle, int walkStart, int walkLast, Texture2D charaWalk, int jump, Texture2D charaJump, int fall, Texture2D charaFall, int attackStart, int attackLast, Texture2D charaAttack, int hitStart, int hitLast, Texture2D charaHit, int deadStart, int deadLast, Texture2D charaDead)
+        public void characterState(string state, Texture2D charaIdle, Texture2D charaWalk, Texture2D charaJump, Texture2D charaFall, Texture2D charaAttack, Texture2D charaHit, Texture2D charaDead)
         {
             switch (state)
             {
                 case ("idle"):
                     charaTexture = charaIdle;
-                    Animate(idleStart, idleLast, 4);
+                    Animate(0, 4);
                     break;
                 case ("walkrun"):
                     charaTexture = charaWalk;
-                    Animate(walkStart, walkLast, 4);
+                    Animate(0, 4);
                     break;
                 case ("jump"):
                     charaTexture = charaJump;
-                    Animate(jump, jump, 1);
+                    Animate(0, 4);
                     break;
                 case ("fall"):
                     charaTexture = charaFall;
-                    Animate(fall, fall, 1);
+                    Animate(0, 1);
                     break;
                 case ("attack"):
                     charaTexture = charaAttack;
-                    Animate(attackStart, attackLast, 4);
+                    Animate(0,1);
                     break;
                 case ("hit"): // + add knockback
                     charaTexture = charaHit;
-                    Animate(hitStart, hitLast, 4);
+                    Animate(0,1);
                     break;
                 case ("dead"):
                     charaTexture = charaDead;
-                    Animate(deadStart, deadLast, 4);
+                    Animate(0,4);
                     break;
                 default:
                     break;
@@ -204,9 +131,7 @@ namespace curfew
 
         }
 
-
-
-        void Animate(int startFrame, int endFrame, int framesPerRow)
+        void Animate(int startFrame, int frameCount)
         {
             if (startFrame != previousStartFrame)
             {
@@ -217,17 +142,17 @@ namespace curfew
 
             delay++;
 
-            if (delay > 4) // animation speed
+            if (delay > 4)
             {
                 currentFrame++;
 
-                if (currentFrame > endFrame)
+                if (currentFrame >= frameCount)
                     currentFrame = startFrame;
 
                 delay = 0;
             }
 
-            int frameWidth = charaTexture.Width / framesPerRow;
+            int frameWidth = charaTexture.Width / frameCount;
             int frameHeight = charaTexture.Height;
 
             sourceRectangle = new Rectangle(
@@ -238,19 +163,6 @@ namespace curfew
             );
         }
 
-
-
-
-        public void Hit()
-        {
-            if (knockbackDuration > 0)
-            {
-                knockbackDuration -= knockbackVelocity;
-                xpos += knockbackVelocity;
-                ypos += knockbackVelocity;
-                return; // skip rest of movement while in knockback
-            }
-        }
 
         public void Draw(SpriteBatch _spriteBatch)
         {

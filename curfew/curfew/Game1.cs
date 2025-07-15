@@ -95,7 +95,7 @@ namespace curfew
             playerIdle = Content.Load<Texture2D>("idle");
             playerWalk = Content.Load<Texture2D>("HeroKnight");
   
-            player = new Player(50, 0, "idle", playerIdle);
+            player = new Player(400, 0, "idle", playerIdle, 4);
             player.setStateTexture(
                 playerIdle, playerWalk, playerIdle, playerIdle, playerIdle, playerIdle, playerIdle
             );
@@ -104,15 +104,12 @@ namespace curfew
 
             // Load enemies
             enemyTexture = Content.Load<Texture2D>("HeroKnight");
-            enemy = new Enemy(20, 0, "idle", playerIdle);
-            enemy.setStateTexture(
-               playerIdle, playerWalk, playerIdle, playerIdle, playerIdle, playerIdle, playerIdle
-           );
+       
 
-            enemies.Add(new Enemy(20, 0, "idle", playerIdle));
-            enemies.Add(new Enemy(950, 0, "idle", playerIdle));
-            enemies.Add(new Enemy(130, 0, "idle", playerIdle));
-            enemies.Add(new Enemy(900, 0, "idle", playerIdle));
+            enemies.Add(new Enemy(20, 0, "idle", playerIdle, 4, enemies));
+            enemies.Add(new Enemy(950, 0, "idle", playerIdle, 4, enemies));
+            enemies.Add(new Enemy(130, 0, "idle", playerIdle, 4, enemies));
+            enemies.Add(new Enemy(900, 0, "idle", playerIdle,4, enemies));
 
 
             foreach (Enemy lenemy in enemies)
@@ -122,7 +119,6 @@ namespace curfew
                );
             }
 
-            Console.WriteLine("Enemy created at: " + enemy.xpos + ", " + enemy.ypos);
 
 
             //Load bg
@@ -153,23 +149,37 @@ namespace curfew
             KeyboardState key = Keyboard.GetState();
             prevKeyState = currentKeyState;
             currentKeyState = Keyboard.GetState();
-            
-            //enemies[0].characterState(
-            //    enemies[0].state, playerIdle, playerWalk, playerIdle, playerIdle, playerIdle, playerIdle, playerIdle
-            //);
+       
             if(scene.CurrentScene == "game") {
 
             Camera();
-                player.Update(tiles, currentKeyState);
-                enemy.Update(tiles);
-                foreach(Enemy uenemy in enemies)
+                player.Update(tiles, Keyboard.GetState(), enemies);
+                foreach (var enemy in enemies)
                 {
-                    uenemy.Update(tiles);
+                    // If they intersect AND player is not in iFrames
+                    if (enemy.collisionBox.Intersects(player.collisionBox) && player.iFrames <= 0)
+                    {
+                        bool fromLeft = player.xpos > enemy.xpos; // push away!
+                        player.TakeDamage(1, fromLeft);
+
+                    }
                 }
+
 
             }
 
-            debug.playerInfo(player);
+            for (int i = enemies.Count - 1; i >= 0; i--)
+            {
+                enemies[i].Update(tiles, Keyboard.GetState(), enemies);
+
+                if (enemies[i].isDead)
+                {
+                    enemies.RemoveAt(i);
+                }
+            }
+
+
+            //debug.playerInfo(player);
             base.Update(gameTime);
         }
 
@@ -179,11 +189,16 @@ namespace curfew
             scene.drawSelectScene(camPos, tiles[0], backgroundTexture, backgroundDisplay, backgroundColor);
             _spriteBatch.Draw(tiles[0].tilesTexture, tiles[0].tilesDisplay, backgroundDisplay, backgroundColor);
             player.Draw(_spriteBatch);
-            enemy.Draw(_spriteBatch);
-            foreach(Enemy lenemyd in enemies)
+            player.DrawHitbox(_spriteBatch, pixel);
+            player.DrawCollisionBox(_spriteBatch, pixel); // optional
+
+            foreach (var enemy in enemies)
             {
-                lenemyd.Draw(_spriteBatch);
+                enemy.Draw(_spriteBatch);
+                enemy.DrawCollisionBox(_spriteBatch, pixel); // optional
             }
+
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }

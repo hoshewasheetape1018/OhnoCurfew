@@ -41,9 +41,8 @@ namespace curfew
             }
 
             chara.ypos += (int)chara.velocityY;
-
             // Update collision box
-            chara.collisionBox.X = chara.xpos;
+            chara.collisionBox.X = chara.xpos+chara.cboxOffset;
             chara.collisionBox.Y = chara.ypos;
 
             // Ground collision detection: only snap if falling
@@ -58,17 +57,14 @@ namespace curfew
             // Determine state
             if (!chara.isGrounded)
             {
-                Console.WriteLine("called jumpfall");
                 chara.state = chara.velocityY > 0 ? "fall" : "jump";
             }
             else if (chara.isMoving)
             {
-                Console.WriteLine("called moving");
                 chara.state = "walkrun";
             }
             else
             {
-                Console.WriteLine("called idle");
                 chara.state = "idle";
             }
 
@@ -79,7 +75,6 @@ namespace curfew
         // Jump
         public void Jump()
             {
-            Console.WriteLine("Called Jump in Physics");
                 chara.velocityY = jumpStrength;
                 chara.isJumping = true;
                 chara.isGrounded = false;

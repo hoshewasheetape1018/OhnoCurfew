@@ -13,16 +13,38 @@ namespace curfew
 {
     internal class Enemy : Character
     {
-        public Enemy(int xpos, int ypos, string state, Texture2D charaTexture) : base(xpos, ypos, state, charaTexture)
+        public Enemy(int xpos, int ypos, string state, Texture2D charaTexture, int frameCount, List<Enemy> enemies) : base(xpos, ypos, state, charaTexture, frameCount)
         {
         }
-
-        public void Update(GameTiles[] tiles)
+        public override void Update(GameTiles[] tiles, KeyboardState key, List<Enemy> enemies)
         {
+            if (iFrames > 0) iFrames--;
+            if (isFlashing)
+            {
+                flashTimer--;
+                if (flashTimer <= 0)
+                    isFlashing = false;
+            }
+
+            ApplyKnockback();
+
+            if (knockbackFrames > 0)
+            {
+                characterState(); // optional animation change
+                return;
+            }
+
+            // Your enemy AI logic here (movement, etc)
+
             characterState();
-            physics.ApplyPhysics(tiles[0], new KeyboardState());
+            physics.ApplyPhysics(tiles[0], key);
 
+            // Update collisionBox position to follow enemy
+            collisionBox.X = xpos;
+            collisionBox.Y = ypos;
         }
+
+
 
     }
 }

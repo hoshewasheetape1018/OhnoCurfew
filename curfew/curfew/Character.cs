@@ -24,19 +24,27 @@ namespace curfew
         internal Rectangle sourceRectangle;
         internal string state;
         internal SpriteEffects flip;
-
+        internal Vector2 knockbackVelocity = Vector2.Zero;
+        internal int knockbackFrames = 0;
 
         //PLAYER STATS
 
         //HP
-        int maxlife;
-        int currentlife;
+        internal int maxlife;
+        internal int currentlife = 4;
 
         //ATTACK
         int attack;
         public Rectangle attackHitbox;
         public int attackDuration = 10;
         internal int attackTimer = 0;
+
+        // Flash + invincibility
+        internal bool isFlashing;
+        internal int flashTimer;
+        internal int iFrames;
+        internal int maxIFrames = 30;
+
 
         //PHYSICS
         public Physics physics;
@@ -55,10 +63,12 @@ namespace curfew
         internal bool isJumping;
         internal bool isMoving;
         public bool isAttacking;
+        private bool hasDealtDamageThisAttack = false;
 
 
         // COLLISION BOX
         public Rectangle collisionBox;
+        internal int cboxOffset;
 
         //ANIMATION
         private int currentFrame;
@@ -68,6 +78,7 @@ namespace curfew
         private int frameHeight;
         private int knockbackDuration;
         internal bool wasJumpingLastFrame = false;
+        internal int frameCount;
 
         //STATE TEXTURES
         Texture2D charaIdle, charaWalk, charaJump, charaFall, charaAttack, charaHit, charaDead;
@@ -76,11 +87,12 @@ namespace curfew
         KeyboardState currentKeyState;
         KeyboardState prevKeyState;
         private SpriteBatch _spriteBatch;
+        private List<Enemy> enemiesHit = new List<Enemy>();
 
         int jumpBufferTime = 6;
         int jumpBufferCounter = 0;
 
-        public Character(int xpos, int ypos, string state, Texture2D charaTexture)
+        public Character(int xpos, int ypos, string state, Texture2D charaTexture, int frameCount)
         {
             this.xpos = xpos;
             this.ypos = ypos;
@@ -90,8 +102,9 @@ namespace curfew
 
             charaWidth = charaTexture.Width;
             charaHeight = charaTexture.Height;
-            collisionBox = new Rectangle(xpos, ypos, charaWidth, charaHeight);
             physics = new Physics(this);
+            this.frameCount = frameCount;
+            collisionBox = new Rectangle(xpos, ypos, charaWidth/frameCount-60, charaHeight);
 
         }
 
@@ -147,7 +160,7 @@ namespace curfew
 
         }
 
-        void Animate(int startFrame, int frameCount)
+        void Animate(int startFrame, int lastFrame)
         {
             if (startFrame != previousStartFrame)
             {
@@ -178,20 +191,161 @@ namespace curfew
                 frameHeight
             );
         }
-
-
-        public void Draw(SpriteBatch _spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
-            _spriteBatch.Draw(charaTexture, new Rectangle(xpos, ypos, 163, 163), sourceRectangle, Color.White, 0, Vector2.Zero, flip, 0);
+            Color tint = isFlashing ? Color.Red : Color.White;
+
+            spriteBatch.Draw(
+                charaTexture,
+                new Rectangle(xpos, ypos, 163, 163),
+                sourceRectangle,
+                tint,
+                0,
+                Vector2.Zero,
+                flip,
+                0
+            );
         }
 
 
-        public void Update(GameTiles[] tiles)
+        internal void StartAttack()
         {
+            isAttacking = true;
+            state = "attack";
+            attackTimer = attackDuration;
+            hasDealtDamageThisAttack = false; // ← Reset
+
+            int hitboxWidth = 50;
+            int hitboxHeight = 50;
+            int offsetX = facingLeft ? -hitboxWidth : collisionBox.Width;
+
+            attackHitbox = new Rectangle(xpos + offsetX, ypos, hitboxWidth, hitboxHeight);
+        }
+
+
+
+        public void TriggerKnockback(bool fromLeft)
+        {
+            int knockbackStrength = 6;
+            int verticalLift = -3;
+
+            knockbackVelocity = new Vector2(fromLeft ? knockbackStrength : -knockbackStrength, verticalLift);
+            knockbackFrames = 10;
+
+            Console.WriteLine($"[Knockback] Velocity set to {knockbackVelocity}, Frames: {knockbackFrames}");
+        }
+        public void ApplyKnockback()
+        {
+            if (knockbackFrames > 0)
+            {
+                xpos += (int)knockbackVelocity.X;
+                ypos += (int)knockbackVelocity.Y;
+                knockbackVelocity.Y += 0.5f; // simulate gravity
+                knockbackFrames--;
+
+                Console.WriteLine($"[ApplyKnockback] xpos: {xpos}, ypos: {ypos}, velocityY: {knockbackVelocity.Y}, frames left: {knockbackFrames}");
+
+                // Clamp to ground
+                int groundY = 864 - 100;
+                int bottom = ypos + charaHeight;
+
+                if (bottom > groundY)
+                {
+                    ypos = groundY - charaHeight;
+                    knockbackVelocity.Y = 0;
+                    Console.WriteLine($"[ApplyKnockback] Ground hit. Y clamped to {ypos}");
+                }
+            }
+        }
+
+
+
+        public virtual void TakeDamage(int damage, bool fromLeft)
+        {
+            if (iFrames > 0) return;
+
+            currentlife -= damage;
+            isHit = true;
+            isFlashing = true;
+            flashTimer = 10;
+            iFrames = maxIFrames;
+            state = "hit";
+
+            Console.WriteLine($"[{this.GetType().Name}] Took {damage} damage. Life left: {currentlife}");
+
+            TriggerKnockback(fromLeft);
+
+            if (currentlife <= 0)
+            {
+                isDead = true;
+                state = "dead";
+                Console.WriteLine($"[{this.GetType().Name}] DIED.");
+            }
+        }
+
+        internal void HandleAttack(List<Enemy> enemies)
+        {
+            if (isAttacking)
+            {
+                attackTimer--;
+
+                foreach (Enemy enemy in enemies)
+                {
+                    if (attackHitbox.Intersects(enemy.collisionBox) && !enemiesHit.Contains(enemy))
+                    {
+                        bool hitFromLeft = !facingLeft;
+                        enemy.TakeDamage(1, hitFromLeft);
+                        enemiesHit.Add(enemy);
+                    }
+                }
+
+                if (attackTimer <= 0)
+                {
+                    isAttacking = false;
+                    state = "idle";
+                    enemiesHit.Clear(); // Clear after attack ends
+                }
+            }
+        }
+
+
+
+
+        public virtual void Update(GameTiles[] tiles, KeyboardState key, List<Enemy> enemies)
+        {
+            if (iFrames > 0) iFrames--;
+            if (isFlashing)
+            {
+                flashTimer--;
+                if (flashTimer <= 0)
+                    isFlashing = false;
+            }
+
+            HandleAttack(enemies);
             characterState();
-            physics.ApplyPhysics(tiles[0], new KeyboardState());
+            physics.ApplyPhysics(tiles[0], key);
 
+            prevKeyState = currentKeyState;
         }
+
+        public void DrawHitbox(SpriteBatch spriteBatch, Texture2D debugTexture)
+        {
+            if (isAttacking)
+            {
+                spriteBatch.Draw(
+                    debugTexture,
+                    attackHitbox,
+                    Color.Red * 0.4f // Semi-transparent red
+                );
+            }
+        }
+
+        public void DrawCollisionBox(SpriteBatch spriteBatch, Texture2D debugTexture)
+        {
+            spriteBatch.Draw(debugTexture, collisionBox, Color.Blue * 0.3f);
+        }
+
+
 
     }
 }

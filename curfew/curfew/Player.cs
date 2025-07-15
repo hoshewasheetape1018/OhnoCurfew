@@ -12,20 +12,40 @@ namespace curfew
     {
         internal int windowHeight;
 
-        public Player(int xpos, int ypos, string state, Texture2D charaTexture) : base(xpos, ypos, state, charaTexture)
+        public Player(int xpos, int ypos, string state, Texture2D charaTexture, int frameCount) : base(xpos, ypos, state, charaTexture, frameCount)
         {
             this.xpos = xpos;
             this.ypos = ypos;
         }
 
-        public void Update( GameTiles[] tiles, KeyboardState key)
+        public override void Update(GameTiles[] tiles, KeyboardState key, List<Enemy> enemies)
         {
-            characterState();
-            keyboardInput(key);
-            physics.ApplyPhysics(tiles[0], key);
-            resetPlayerPos(windowHeight);
+            if (iFrames > 0) iFrames--;
+            if (isFlashing)
+            {
+                flashTimer--;
+                if (flashTimer <= 0)
+                    isFlashing = false;
+            }
 
+            ApplyKnockback();
+
+            if (knockbackFrames > 0)
+            {
+                HandleAttack(enemies); // ← still allow attack logic
+                physics.ApplyPhysics(tiles[0], key); // ← still apply physics like gravity
+                return;
+            }
+
+            keyboardInput(key); // ← ❗️ you forgot this
+            if (key.IsKeyDown(Keys.Z) && !isAttacking)
+                StartAttack();
+
+            HandleAttack(enemies);
+            characterState();
+            physics.ApplyPhysics(tiles[0], key);
         }
+
 
         public void keyboardInput(KeyboardState key)
         {
@@ -56,6 +76,7 @@ namespace curfew
 
             wasJumpingLastFrame = jump;
             flip = facingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            cboxOffset = facingLeft ? 30 : 35;
 
 
 

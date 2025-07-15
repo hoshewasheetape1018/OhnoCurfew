@@ -32,12 +32,12 @@ namespace curfew
 
             if (knockbackFrames > 0)
             {
-                HandleAttack(enemies); // ← still allow attack logic
-                physics.ApplyPhysics(tiles[0], key); // ← still apply physics like gravity
+                HandleAttack(enemies); 
+                physics.ApplyPhysics(tiles[0], key);
                 return;
             }
 
-            keyboardInput(key); // ← ❗️ you forgot this
+            keyboardInput(key);
             if (key.IsKeyDown(Keys.Z) && !isAttacking)
                 StartAttack();
 

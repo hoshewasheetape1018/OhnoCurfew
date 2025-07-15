@@ -30,17 +30,19 @@ namespace curfew
 
             if (knockbackFrames > 0)
             {
-                characterState(); // optional animation change
+                characterState(); // optional animation change??
                 return;
             }
 
-            // Your enemy AI logic here (movement, etc)
+            // enemy AI logic here (movement, etc)
 
             characterState();
             physics.ApplyPhysics(tiles[0], key);
+            flip = facingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            cboxOffset = facingLeft ? 30 : 35;
 
-            // Update collisionBox position to follow enemy
-            collisionBox.X = xpos;
+
+            collisionBox.X = xpos + cboxOffset;
             collisionBox.Y = ypos;
         }
 

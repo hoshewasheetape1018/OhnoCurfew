@@ -156,10 +156,10 @@ namespace curfew
                 player.Update(tiles, Keyboard.GetState(), enemies);
                 foreach (var enemy in enemies)
                 {
-                    // If they intersect AND player is not in iFrames
+                    // intersect AND player is not in iFrames
                     if (enemy.collisionBox.Intersects(player.collisionBox) && player.iFrames <= 0)
                     {
-                        bool fromLeft = player.xpos > enemy.xpos; // push away!
+                        bool fromLeft = player.xpos > enemy.xpos; 
                         player.TakeDamage(1, fromLeft);
 
                     }
@@ -190,12 +190,12 @@ namespace curfew
             _spriteBatch.Draw(tiles[0].tilesTexture, tiles[0].tilesDisplay, backgroundDisplay, backgroundColor);
             player.Draw(_spriteBatch);
             player.DrawHitbox(_spriteBatch, pixel);
-            player.DrawCollisionBox(_spriteBatch, pixel); // optional
+            player.DrawCollisionBox(_spriteBatch, pixel); // optional for debug only
 
             foreach (var enemy in enemies)
             {
                 enemy.Draw(_spriteBatch);
-                enemy.DrawCollisionBox(_spriteBatch, pixel); // optional
+                enemy.DrawCollisionBox(_spriteBatch, pixel); // optional for debug only
             }
 
 

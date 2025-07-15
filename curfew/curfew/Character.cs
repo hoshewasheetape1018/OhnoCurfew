@@ -217,7 +217,7 @@ namespace curfew
 
             int hitboxWidth = 50;
             int hitboxHeight = 50;
-            int offsetX = facingLeft ? -hitboxWidth : collisionBox.Width;
+            int offsetX = facingLeft ? -collisionBox.Width+70: collisionBox.Width+50;
 
             attackHitbox = new Rectangle(xpos + offsetX, ypos, hitboxWidth, hitboxHeight);
         }

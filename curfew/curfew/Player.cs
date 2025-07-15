@@ -17,6 +17,15 @@ namespace curfew
             this.xpos = xpos;
             this.ypos = ypos;
         }
+
+        public void Update( GameTiles[] tiles, KeyboardState key)
+        {
+            characterState();
+            keyboardInput(key);
+            physics.ApplyPhysics(tiles[0], key);
+
+        }
+
         public void keyboardInput(KeyboardState key)
         {
             isMoving = false;

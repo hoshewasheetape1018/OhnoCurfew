@@ -31,10 +31,9 @@ namespace curfew
         List<Enemy> enemies;
         bool hasCheckpointSave = false;
 
-        public Scene(Player player, List<Enemy> enemies, string currentScene, Action exitCallback, ContentManager Content, SpriteBatch spriteBatch, int windowWidth, int windowHeight)
+        public Scene(Player player, string currentScene, Action exitCallback, ContentManager Content, SpriteBatch spriteBatch, int windowWidth, int windowHeight)
         {
             this.player = player;
-            this.enemies = enemies;
             this.currentScene = currentScene;
             this.exitCallback = exitCallback;
             this.Content = Content;
@@ -154,11 +153,7 @@ namespace curfew
            // _spriteBatch.Draw(backgroundDisplay, backgroundRectangle, backgroundColor);
             //load cam
             camPos.Translation = new Vector3(player.xpos, player.ypos, camPos.Translation.Z);
-            player.Draw(_spriteBatch);
-            foreach (Enemy enemy in enemies)
-            {
-                enemy.Draw(_spriteBatch);
-            }
+  
         }
 
         public Color getColor()

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace curfew
 {
 
-    internal abstract class Character
+    internal class Character
     {
         //PLAYER PROPERTIES
 
@@ -69,6 +69,9 @@ namespace curfew
         private int knockbackDuration;
         internal bool wasJumpingLastFrame = false;
 
+        //STATE TEXTURES
+        Texture2D charaIdle, charaWalk, charaJump, charaFall, charaAttack, charaHit, charaDead;
+
         // OTHERS
         KeyboardState currentKeyState;
         KeyboardState prevKeyState;
@@ -85,7 +88,6 @@ namespace curfew
 
             this.charaTexture = charaTexture;
 
-
             charaWidth = charaTexture.Width;
             charaHeight = charaTexture.Height;
             collisionBox = new Rectangle(xpos, ypos, charaWidth, charaHeight);
@@ -93,7 +95,21 @@ namespace curfew
 
         }
 
-        public void characterState(string state, Texture2D charaIdle, Texture2D charaWalk, Texture2D charaJump, Texture2D charaFall, Texture2D charaAttack, Texture2D charaHit, Texture2D charaDead)
+
+        public void setStateTexture(Texture2D charaIdle, Texture2D charaWalk, Texture2D charaJump, Texture2D charaFall, Texture2D charaAttack, Texture2D charaHit, Texture2D charaDead)
+        {
+            charaTexture = charaIdle;
+            this.charaIdle = charaIdle;
+            this.charaWalk = charaWalk;
+            this.charaJump = charaJump;
+            this.charaFall = charaFall;
+            this.charaAttack = charaAttack;
+            this.charaHit = charaHit;
+            this.charaDead = charaDead;
+        }
+
+
+        public void characterState()
         {
             switch (state)
             {
@@ -168,6 +184,15 @@ namespace curfew
         {
             _spriteBatch.Draw(charaTexture, new Rectangle(xpos, ypos, 163, 163), sourceRectangle, Color.White, 0, Vector2.Zero, flip, 0);
         }
+
+
+        public void Update(GameTiles[] tiles)
+        {
+            characterState();
+            physics.ApplyPhysics(tiles[0], new KeyboardState());
+
+        }
+
     }
 }
 

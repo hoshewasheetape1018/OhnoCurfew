@@ -17,16 +17,12 @@ namespace curfew
         {
         }
 
-        public void CheckIfHit(Rectangle playerAttackHitbox)
+        public void Update(GameTiles[] tiles)
         {
-            if (!isHit && playerAttackHitbox.Intersects(this.collisionBox))
-            {
-                isHit = true;
-                state = "hit";
-                // Apply knockback or reduce HP here
-            }
-        }
+            characterState();
+            physics.ApplyPhysics(tiles[0], new KeyboardState());
 
+        }
 
     }
 }
